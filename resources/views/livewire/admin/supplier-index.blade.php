@@ -82,20 +82,23 @@
                         <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
                     @enderror
                 </div>
-        
                 <!-- Campo Teléfono -->
                 <div data-flux-field>
                     <label for="phone_number" class="block text-sm font-medium text-zinc-300 mb-1">
                         N° Teléfono <span class="text-red-500">*</span>
                     </label>
-                    <input type="number" id="phone_number" name="phone_number"
-                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
-                        placeholder="Ej: 987654321" required data-flux-control>
+                    <div class="flex items-center">
+                        <span class="px-4 py-3 inline-flex items-center bg-zinc-700 text-white border border-r-0 border-zinc-600 rounded-l-lg text-sm">
+                            +51
+                        </span>
+                        <input type="number" id="phone_number" name="phone_number"
+                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-r-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
+                            placeholder="Ej: 987654321" required data-flux-control>
+                    </div>
                     @error('phone_number')
                         <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
                     @enderror
                 </div>
-        
                 <!-- Campo Email -->
                 <div class="md:col-span-2" data-flux-field>
                     <label for="email" class="block text-sm font-medium text-zinc-300 mb-1">

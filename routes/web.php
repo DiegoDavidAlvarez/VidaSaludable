@@ -25,9 +25,6 @@ Route::middleware(['auth'])->group(function () {
 
 Route::prefix('admin')->group(function () {
     Route::resource('categoria', CategoriaController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.categoria');
-});
-
-Route::prefix('admin')->group(function () {
     Route::resource('supplier', SupplierController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.supplier');
 });
 
