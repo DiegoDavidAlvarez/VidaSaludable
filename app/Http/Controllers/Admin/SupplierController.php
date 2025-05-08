@@ -21,7 +21,7 @@ class SupplierController extends Controller
             'ruc' => 'required|integer|digits:11',
             'company_name' => 'required|string|max:255',
             'address' => 'required|string',
-            'phone_number' => 'required|integer|digits:9',
+            'phone_number' => 'required|string|max:20',
             'email' => 'required|email',
         ]);
 
@@ -50,7 +50,7 @@ class SupplierController extends Controller
             'ruc' => 'required|integer',
             'company_name' => 'required|string|max:255',
             'address' => 'required|string',
-            'phone_number' => 'required|integer',
+            'phone_number' => 'required|string|max:20',
             'email' => 'required|email',
         ]);
 
