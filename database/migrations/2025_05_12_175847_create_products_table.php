@@ -25,11 +25,11 @@ return new class extends Migration
                 ->onDelete('cascade'); // Vincula con la tabla suppliers, elimina productos si se borra el proveedor 🗑️
             $table->string('name'); // Nombre del producto (por ejemplo, "Smartphone") 📱
             $table->text('description')->nullable(); // Descripción opcional ✍️
-            $table->string('codigo_barra')->unique(); // Código de barras único 📊
-            $table->decimal('precio_venta', 10, 2); // Precio de venta (por ejemplo, 999.99) 💰
-            $table->decimal('precio_compra', 10, 2); // Precio de compra 💸
+            $table->string('bar_code')->unique(); // Código de barras único 📊
+            $table->decimal('sale_price', 10, 2); // Precio de venta (por ejemplo, 999.99) 💰
+            $table->decimal('purchase_price', 10, 2); // Precio de compra 💸
             $table->integer('stock'); // Cantidad en inventario 📦
-            $table->integer('stock_minimo'); // Nivel mínimo de stock ⚠️
+            $table->integer('min_stock'); // Nivel mínimo de stock ⚠️
             $table->boolean('status')->default(true); // Activo o inactivo ✅
             $table->timestamps(); // Fechas de creación/actualización ⏰
         });

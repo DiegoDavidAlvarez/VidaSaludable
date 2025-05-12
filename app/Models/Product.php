@@ -12,9 +12,14 @@ class Product extends Model
     protected $fillable = [
         'category_id', // Clave foránea para categoría 📚
         'supplier_id', // Clave foránea para proveedor 🏭
-        'name', 'description', 'bar_code',
-        'sale_price', 'purchase_price',
-        'stock', 'min_stock', 'status'
+        'name', 
+        'description', 
+        'bar_code',
+        'sale_price', 
+        'purchase_price',
+        'stock', 
+        'min_stock', 
+        'status'
     ]; // Campos que podemos llenar al crear/actualizar un producto ✍️
 
     protected $casts = [

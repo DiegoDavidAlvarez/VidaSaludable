@@ -18,15 +18,15 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'category_id' => 'required|exists:categories,id', // Debe ser un ID de categoría válido 📚
-            'supplier_id' => 'required|exists:suppliers,id', // Debe ser un ID de proveedor válido 🏭
-            'name' => 'required|string|max:255', // Nombre del producto es obligatorio ✍️
-            'description' => 'nullable|string', // Descripción es opcional 📝
-            'bar_code' => 'required|string|unique:products,bar_code', // Código de barras único 📊
-            'sale_price' => 'required|numeric|min:0', // Precio de venta debe ser positivo 💰
-            'purchase_price' => 'required|numeric|min:0', // Precio de compra debe ser positivo 💸
-            'stock' => 'required|integer|min:0', // Stock debe ser un entero no negativo 📦
-            'min_stock' => 'required|integer|min:0', // Stock mínimo debe ser no negativo ⚠️
+            'category_id' => 'required|exists:categories,id',
+            'supplier_id' => 'required|exists:suppliers,id',
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'bar_code' => 'required|string|unique:products,bar_code',
+            'sale_price' => 'required|integer|min:0',
+            'purchase_price' => 'required|integer|min:0',
+            'stock' => 'required|integer|min:0',
+            'min_stock' => 'required|integer|min:0',
         ]);
 
         try {
@@ -35,13 +35,18 @@ class ProductController extends Controller
             $product = Product::create([
                 'category_id' => $request->category_id,
                 'supplier_id' => $request->supplier_id,
-                // Otros campos...
+                'name' => $request->name,
+                'description' => $request->description,
+                'bar_code' => $request->bar_code,
+                'sale_price' => $request->sale_price,
+                'purchase_price' => $request->purchase_price,
+                'stock' => $request->stock,
+                'min_stock' => $request->min_stock,
                 'status' => true, // Activo por defecto ✅
             ]);
 
             return redirect()->route('admin.product.index')
                 ->with('success', 'El producto fue registrado correctamente.');
-
         } catch (ValidationException $e) {
             return back()->withErrors($e->validator->errors())->withInput();
         }
