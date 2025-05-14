@@ -56,6 +56,7 @@
                         <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">Precio compra</th>
                         <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">Stock</th>
                         <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">Stock minimo</th>
+                        <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">Estado</th>
                         <th class="px-4 py-3 text-right text-sm font-medium text-zinc-300 uppercase">Acciones</th>
                     </tr>
                 </thead>
@@ -64,11 +65,12 @@
                         <tr>
                             <td class="px-4 py-4 text-sm text-zinc-300">{{ $loop->iteration }}</td>
                             <td class="px-4 py-4 text-sm text-zinc-300">{{ Str::limit($product->category->name, 20)}}</td>
-                            <td class="px-4 py-4 text-sm text-zinc-300">{{ Str::limit($product->supplier->razon_social, 20)}}</td>
+                            <td class="px-4 py-4 text-sm text-zinc-300">{{ Str::limit($product->supplier->company_name, 20)}}</td>
                             <td class="px-4 py-4 text-sm text-zinc-300">{{ $product->name }}</td>
                             <td class="px-4 py-4 text-sm text-zinc-300">{{ $product->description }}</td>
+                            <td class="px-4 py-4 text-sm text-zinc-300">{{ $product->bar_code }}</td>
                             <td class="px-4 py-4 text-sm text-zinc-300">{{ $product->sale_price }}</td>
-                            <td class="px-4 py-4 text-sm text-zinc-300">{{ $product->purchase_prise }}</td>
+                            <td class="px-4 py-4 text-sm text-zinc-300">{{ $product->purchase_price }}</td>
                             <td class="px-4 py-4 text-sm text-zinc-300">{{ $product->stock }}</td>
                             <td class="px-4 py-4 text-sm text-zinc-300">{{ $product->min_stock }}</td>
                             <td class="px-4 py-4">
