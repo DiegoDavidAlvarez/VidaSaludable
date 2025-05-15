@@ -67,7 +67,7 @@
                                 <button
                                     @click="openModal({{ $purchase->id }}, 
                                     '{{ addslashes($purchase->supplier->company_name) }}',
-                                    '{{ addslashes($purchase->date) }}', 
+                                    '{{ \Carbon\Carbon::parse($purchase->date)->format('Y-m-d') }}', 
                                     '{{ addslashes($purchase->total) }}', 
                                     '{{ addslashes($purchase->receipt_type) }}')"
                                     class="text-blue-500 hover:text-blue-400 mr-3">
