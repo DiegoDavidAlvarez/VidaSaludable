@@ -163,7 +163,7 @@
                         required data-flux-control>
                         <option value="" disabled selected>Seleccione una categoría</option>
                         @foreach ($categories as $category)
-                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                            <option value="{{ $category->id }}" selected>{{ $category->name }}</option>
                         @endforeach
                     </select>
                     @error('category_id')
@@ -180,7 +180,7 @@
                         required data-flux-control>
                         <option value="" disabled selected>Seleccione un proveedor</option>
                         @foreach ($suppliers as $supplier)
-                            <option value="{{ $supplier->id }}">{{ $supplier->company_name }}</option>
+                            <option value="{{ $supplier->id }}" selected>{{ $supplier->company_name }}</option>
                         @endforeach
                     </select>
                     @error('supplier_id')
@@ -192,7 +192,7 @@
                     <label for="name" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
                         Nombre <span class="text-red-500">*</span>
                     </label>
-                    <input type="text" id="name" name="name"
+                    <input type="text" id="name" name="name" x-model="currentName"
                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
                         placeholder="Ej: Paracetamol 500mg" required maxlength="255" data-flux-control>
                     @error('name')
@@ -204,7 +204,7 @@
                     <label for="bar_code" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
                         Código de Barra <span class="text-red-500">*</span>
                     </label>
-                    <input type="text" id="bar_code" name="bar_code"
+                    <input type="text" id="bar_code" name="bar_code" x-model="currentBarCode"
                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
                         placeholder="Ej: 012345678912" required maxlength="50" data-flux-control>
                     @error('bar_code')
@@ -216,7 +216,7 @@
                     <label for="sale_price" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
                         Precio de Venta <span class="text-red-500">*</span>
                     </label>
-                    <input type="number" id="sale_price" name="sale_price"
+                    <input type="number" id="sale_price" name="sale_price" x-model="currentSalePrice"
                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
                         placeholder="Ej: 12.50" required step="0.01" min="0" data-flux-control>
                     @error('sale_price')
@@ -228,7 +228,7 @@
                     <label for="purchase_price" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
                         Precio de Compra <span class="text-red-500">*</span>
                     </label>
-                    <input type="number" id="purchase_price" name="purchase_price"
+                    <input type="number" id="purchase_price" name="purchase_price" x-model="currentPurchasePrice"
                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
                         placeholder="Ej: 10.00" required step="0.01" min="0" data-flux-control>
                     @error('purchase_price')
@@ -240,7 +240,7 @@
                     <label for="stock" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
                         Stock <span class="text-red-500">*</span>
                     </label>
-                    <input type="number" id="stock" name="stock"
+                    <input type="number" id="stock" name="stock" x-model="currentStock"
                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
                         placeholder="Ej: 100" required min="0" step="1" oninput="this.value = Math.floor(this.value)"
                         data-flux-control>
@@ -253,7 +253,7 @@
                     <label for="min_stock" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
                         Stock Mínimo <span class="text-red-500">*</span>
                     </label>
-                    <input type="number" id="min_stock" name="min_stock"
+                    <input type="number" id="min_stock" name="min_stock" x-model="currentMinStock"
                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
                         placeholder="Ej: 10" required min="0" step="1" oninput="this.value = Math.floor(this.value)"
                         data-flux-control>
@@ -267,7 +267,7 @@
                 <label for="description" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
                     Descripción
                 </label>
-                <textarea id="description" name="description" rows="4"
+                <textarea id="description" name="description" rows="4" x-model="currentDescription"
                     class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
                     placeholder="Ej: Tabletas para el dolor de cabeza" data-flux-control></textarea>
                 @error('description')
