@@ -54,8 +54,8 @@ class PurchaseController extends Controller
         try {
             $validator->validate();
 
-            $purchase = Purchase::create([
-                'user_id' => auth()->user()->id,
+            $purchase = Purchase::findOrFail($id);
+            $purchase->update([
                 'supplier_id' => $request->supplier_id,
                 'date' => $request->date,
                 'total' => $request->total,
@@ -64,6 +64,7 @@ class PurchaseController extends Controller
 
             return redirect()->route('admin.purchase.index')
                 ->with('success', 'La compra fue actualizada correctamente.');
+
         } catch (ValidationException $e) {
             return back()->withErrors($e->validator->errors())->withInput();
         }
