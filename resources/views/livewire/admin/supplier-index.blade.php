@@ -49,7 +49,7 @@
                     <label for="ruc" class="block text-sm font-medium text-zinc-300 mb-1">
                         RUC de la empresa <span class="text-red-500">*</span>
                     </label>
-                    <input type="number" id="ruc" name="ruc"
+                    <input type="text" id="ruc" name="ruc" pattern="[0-9]{11}" maxlength="11" inputmode="numeric"
                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
                         placeholder="Ej: 12345678910" required data-flux-control>
                     @error('ruc')
@@ -91,7 +91,7 @@
                         <span class="px-4 py-3 inline-flex items-center bg-zinc-700 text-white border border-r-0 border-zinc-600 rounded-l-lg text-sm">
                             +51
                         </span>
-                        <input type="number" id="phone_number" name="phone_number"
+                        <input type="tel" id="phone_number" name="phone_number" pattern="[0-9]{9}" maxlength="9" inputmode="numeric"
                             class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-r-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
                             placeholder="Ej: 987654321" required data-flux-control>
                     </div>
@@ -137,3 +137,11 @@
         
     </div>
 </div>
+<script>
+document.getElementById('phone_number').addEventListener('input', function (e) {
+    e.target.value = e.target.value.replace(/[^0-9]/g, '');
+});
+document.getElementById('ruc').addEventListener('input', function (e) {
+    e.target.value = e.target.value.replace(/[^0-9]/g, '');
+});
+</script>
