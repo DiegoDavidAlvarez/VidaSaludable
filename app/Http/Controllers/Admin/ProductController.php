@@ -21,12 +21,12 @@ class ProductController extends Controller
             'category_id' => 'required|exists:categories,id',
             'supplier_id' => 'required|exists:suppliers,id',
             'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'bar_code' => 'required|string|unique:products,bar_code',
-            'sale_price' => 'required|numeric|min:0',
-            'purchase_price' => 'required|numeric|min:0',
-            'stock' => 'required|integer|min:0',
-            'min_stock' => 'required|integer|min:0',
+            'description' => 'nullable|string|max:255',
+            'bar_code' => 'required|string|unique:products,bar_code|max:255',
+            'sale_price' => 'required|numeric|min:0|max:99999999.99',
+            'purchase_price' => 'required|numeric|min:0|max:99999999.99',
+            'stock' => 'required|integer|min:0|max:99999999999',
+            'min_stock' => 'required|integer|min:0|max:99999999999',
         ]);
 
         try {
@@ -58,12 +58,12 @@ class ProductController extends Controller
             'category_id' => 'required|exists:categories,id',
             'supplier_id' => 'required|exists:suppliers,id',
             'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'bar_code' => 'required|string|unique:products,bar_code',
-            'sale_price' => 'required|decimal:2|min:0',
-            'purchase_price' => 'required|decimal:2|min:0',
-            'stock' => 'required|integer|min:0',
-            'min_stock' => 'required|integer|min:0',
+            'description' => 'nullable|string|max:255',
+            'bar_code' => 'required|string|unique:products,bar_code|max:255',
+            'sale_price' => 'required|numeric|min:0|max:99999999.99',
+            'purchase_price' => 'required|numeric|min:0|max:99999999.99',
+            'stock' => 'required|integer|min:0|max:99999999999',
+            'min_stock' => 'required|integer|min:0|max:99999999999',
         ]);
 
         try {

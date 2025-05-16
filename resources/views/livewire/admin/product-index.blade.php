@@ -83,7 +83,7 @@
                     <label for="name" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
                         Nombre <span class="text-red-500">*</span>
                     </label>
-                    <input type="text" id="name" name="name"
+                    <input type="text" id="name" name="name" maxlength="255"
                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
                         placeholder="Ej: Paracetamol 500mg" required maxlength="255" data-flux-control>
                     @error('name')
@@ -96,8 +96,9 @@
                         Código de Barra <span class="text-red-500">*</span>
                     </label>
                     <input type="text" id="bar_code" name="bar_code"
+                        pattern="[0-9]{1,50}" maxlength="50" inputmode="numeric"
                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
-                        placeholder="Ej: 012345678912" required maxlength="50" data-flux-control>
+                        placeholder="Ej: 012345678912" required data-flux-control>
                     @error('bar_code')
                         <p class="mt-1 text-sm text-red-500 font-medium" data-flux-component="error">{{ $message }}</p>
                     @enderror
@@ -107,7 +108,7 @@
                     <label for="sale_price" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
                         Precio de Venta <span class="text-red-500">*</span>
                     </label>
-                    <input type="number" id="sale_price" name="sale_price"
+                    <input type="text" id="sale_price" name="sale_price" step="0.01" max="99999999.99" min="0" maxlength="12"
                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
                         placeholder="Ej: 12.50" required step="0.01" min="0" data-flux-control>
                     @error('sale_price')
@@ -119,7 +120,7 @@
                     <label for="purchase_price" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
                         Precio de Compra <span class="text-red-500">*</span>
                     </label>
-                    <input type="number" id="purchase_price" name="purchase_price"
+                    <input type="number" id="purchase_price" name="purchase_price" step="0.01" max="99999999.99" min="0"
                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
                         placeholder="Ej: 10.00" required step="0.01" min="0" data-flux-control>
                     @error('purchase_price')
@@ -131,7 +132,7 @@
                     <label for="stock" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
                         Stock <span class="text-red-500">*</span>
                     </label>
-                    <input type="number" id="stock" name="stock"
+                    <input type="text" id="stock" name="stock"
                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
                         placeholder="Ej: 100" required min="0" step="1" oninput="this.value = Math.floor(this.value)"
                         data-flux-control>
@@ -144,7 +145,7 @@
                     <label for="min_stock" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
                         Stock Mínimo <span class="text-red-500">*</span>
                     </label>
-                    <input type="number" id="min_stock" name="min_stock"
+                    <input type="text" id="min_stock" name="min_stock"
                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
                         placeholder="Ej: 10" required min="0" step="1" oninput="this.value = Math.floor(this.value)"
                         data-flux-control>
@@ -158,7 +159,7 @@
                 <label for="description" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
                     Descripción
                 </label>
-                <textarea id="description" name="description" rows="4"
+                <textarea id="description" name="description" rows="4" maxlength="255"
                     class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
                     placeholder="Ej: Tabletas para el dolor de cabeza" data-flux-control></textarea>
                 @error('description')
@@ -185,3 +186,16 @@
         </form>
     </div>
 </div>
+<script>
+    document.getElementById('bar_code').addEventListener('input', function (e) {
+        e.target.value = e.target.value.replace(/[^0-9]/g, '');
+    });
+    document.getElementById('sale_price').addEventListener('input', function (e) {
+        e.target.value = e.target.value.replace(/[^0-9\.]/g, '');
+        
+        const parts = e.target.value.split('.');
+        if (parts.length > 2) {
+            e.target.value = parts[0] + '.' + parts.slice(1).join('');
+        }
+    });
+</script>

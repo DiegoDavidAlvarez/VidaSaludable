@@ -48,7 +48,7 @@
                 <label for="name" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
                     Nombre de la categoría <span class="text-red-500">*</span>
                 </label>
-                <input type="text" id="name" name="name"
+                <input type="text" id="name" name="name" maxlength="255"
                     class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
                     placeholder="Ej: Medicamentos, Suplementos, Cuidado Personal" required data-flux-control>
                 @error('name')
@@ -60,7 +60,7 @@
                 <label for="description" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
                     Descripción <span class="text-red-500">*</span>
                 </label>
-                <textarea id="description" name="description" rows="3"
+                <textarea id="description" name="description" rows="3" maxlength="255"
                     class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
                     placeholder="Describe la categoría" required data-flux-control></textarea>
                 @error('description')

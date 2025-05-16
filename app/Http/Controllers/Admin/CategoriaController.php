@@ -19,7 +19,7 @@ class CategoriaController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'description' => 'required|string',
+            'description' => 'required|string|max:255',
         ]);
 
         try {
@@ -43,7 +43,7 @@ class CategoriaController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'description' => 'required|string',
+            'description' => 'required|string|max:255',
         ]);
 
         try {

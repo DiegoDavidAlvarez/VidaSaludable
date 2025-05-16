@@ -10,8 +10,12 @@ class ProductIndex extends Component
 {
     public function render()
     {
-        $categories = Category::all();
-        $suppliers = Supplier::all();
+        $categories = Category::where('status', 1)
+            ->orderBy('created_at', 'desc')
+            ->paginate(0);
+        $suppliers = Supplier::where('status', 1)
+            ->orderBy('created_at', 'desc')
+            ->paginate(0);
         return view('livewire.admin.product-index', compact('categories', 'suppliers'));
     }
 }

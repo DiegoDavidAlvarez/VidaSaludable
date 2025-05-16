@@ -135,7 +135,7 @@
                             <!-- Campo Nombre -->
                             <div class="mb-6">
                                 <label class="block text-sm font-medium text-zinc-300 mb-2">Nombre</label>
-                                <input type="text" x-model="currentName" name="name"
+                                <input type="text" x-model="currentName" name="name" maxlength="255"
                                     class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                     required>
                             </div>
@@ -143,7 +143,7 @@
                             <!-- Campo Descripción -->
                             <div class="mb-6">
                                 <label class="block text-sm font-medium text-zinc-300 mb-2">Descripción</label>
-                                <textarea x-model="currentDescription" name="description" rows="5"
+                                <textarea x-model="currentDescription" name="description" rows="5" maxlength="255"
                                     class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                     required></textarea>
                             </div>

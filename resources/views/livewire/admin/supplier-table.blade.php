@@ -74,13 +74,17 @@
                             </td>
                             <td class="px-4 py-4 text-sm text-right">
                                 <!-- Botón Editar -->
-                                <button
-                                    @click="openModal({{ $supplier->id }}, '{{ addslashes($supplier->ruc) }}', '{{ addslashes($supplier->company_name) }}', '{{ addslashes($supplier->address) }}', '{{ addslashes($supplier->phone_number) }}', '{{ addslashes($supplier->email) }}')"
-                                    class="text-blue-500 hover:text-blue-400 mr-3">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
-                                        fill="currentColor">
-                                        <path
-                                            d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                                <button 
+                                    class="text-blue-500 hover:text-blue-400 mr-3"
+                                    @click="openModal({{ $supplier->id }}, 
+                                    '{{ addslashes($supplier->ruc) }}', 
+                                    '{{ addslashes($supplier->company_name) }}', 
+                                    '{{ addslashes($supplier->address) }}', 
+                                    '{{ addslashes($supplier->phone_number) }}', 
+                                    '{{ addslashes($supplier->email) }}')"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                                     </svg>
                                 </button>
 
@@ -133,47 +137,52 @@
                     <form :action="'/admin/supplier/' + currentId" method="POST">
                         @csrf
                         @method('PUT')
-                
                         <div class="px-8 py-8">
                             <h3 class="text-xl font-semibold text-white mb-6">Editar Proveedor</h3>
-                
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Campo RUC -->
                                 <div data-flux-field>
                                     <label for="ruc" class="block text-sm font-medium text-zinc-300 mb-1">
                                         RUC de la empresa <span class="text-red-500">*</span>
                                     </label>
-                                    <input type="number" x-model="currentRuc" id="ruc" name="ruc"
-                                           class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
-                                           placeholder="Ej: 12345678910" required data-flux-control>
+                                    <input type="text" id="ruc" name="ruc"
+                                        x-model="currentRuc" pattern="[0-9]{11}" maxlength="11" inputmode="numeric"
+                                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
+                                        placeholder="Ej: 12345678910" required data-flux-control>
                                     @error('ruc')
-                                    <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
+                                        <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
                                     @enderror
                                 </div>
-                
+
+                                <!-- Campo Razon Social -->
                                 <div data-flux-field>
                                     <label for="company_name" class="block text-sm font-medium text-zinc-300 mb-1">
                                         Razon social <span class="text-red-500">*</span>
                                     </label>
-                                    <input type="text" x-model="currentCompanyName" id="company_name" name="company_name"
-                                           class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
-                                           placeholder="Ej: Ferreteria Pedro" required data-flux-control>
+                                    <input type="text" id="company_name" name="company_name"
+                                        x-model="currentCompanyName" maxlength="255"
+                                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
+                                        placeholder="Ej: Ferreteria Pedro" required data-flux-control>
                                     @error('company_name')
-                                    <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
+                                        <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
                                     @enderror
                                 </div>
-                
+
+                                <!-- Campo Dirección -->
                                 <div data-flux-field>
                                     <label for="address" class="block text-sm font-medium text-zinc-300 mb-1">
                                         Dirección <span class="text-red-500">*</span>
                                     </label>
-                                    <input type="text" x-model="currentAddress" id="address" name="address"
-                                           class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
-                                           placeholder="Ej: Calle 123 Cusco" required data-flux-control>
+                                    <input type="text" id="address" name="address"
+                                        x-model="currentAddress" maxlength="255"
+                                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
+                                        placeholder="Ej: Calle 123 Cusco" required data-flux-control>
                                     @error('address')
-                                    <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
+                                        <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
                                     @enderror
                                 </div>
-                
+
+                                <!-- Campo Teléfono -->
                                 <div data-flux-field>
                                     <label for="phone_number" class="block text-sm font-medium text-zinc-300 mb-1">
                                         N° Teléfono <span class="text-red-500">*</span>
@@ -182,29 +191,31 @@
                                         <span class="px-4 py-3 inline-flex items-center bg-zinc-700 text-white border border-r-0 border-zinc-600 rounded-l-lg text-sm">
                                             +51
                                         </span>
-                                        <input type="number" x-model="currentPhoneNumber" id="phone_number" name="phone_number"
-                                               class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-r-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
-                                               placeholder="Ej: 987654321" required data-flux-control>
+                                        <input type="tel" id="phone_number" name="phone_number"
+                                            x-model="currentPhoneNumber" pattern="[0-9]{9}" maxlength="9" inputmode="numeric"
+                                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-r-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
+                                            placeholder="Ej: 987654321" required data-flux-control>
                                     </div>
                                     @error('phone_number')
-                                    <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
+                                        <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
                                     @enderror
                                 </div>
-                
+
+                                <!-- Campo Email -->
                                 <div class="md:col-span-2" data-flux-field>
                                     <label for="email" class="block text-sm font-medium text-zinc-300 mb-1">
                                         Email <span class="text-red-500">*</span>
                                     </label>
-                                    <input type="email" x-model="currentEmail" id="email" name="email"
-                                           class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
-                                           placeholder="Ej: ejemplo@gmail.com" required data-flux-control>
+                                    <input type="email" id="email" name="email"
+                                        x-model="currentEmail" maxlength="255"
+                                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
+                                        placeholder="Ej: ejemplo@gmail.com" required data-flux-control>
                                     @error('email')
-                                    <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
+                                        <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
                                     @enderror
                                 </div>
                             </div>
                         </div>
-                
                         <div class="px-8 py-4 bg-zinc-800 flex justify-end space-x-4">
                             <button type="button" @click="closeModal" class="px-6 py-3 text-zinc-300 hover:text-white">
                                 Cancelar

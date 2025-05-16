@@ -26,7 +26,7 @@ class PurchaseController extends Controller
 
         try {
             $validator->validate();
-
+            /**@disregard Undefined method 'user'*/
             $purchase = Purchase::create([
                 'user_id' => auth()->user()->id,
                 'supplier_id' => $request->supplier_id,

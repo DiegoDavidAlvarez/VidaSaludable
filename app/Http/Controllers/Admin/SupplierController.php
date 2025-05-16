@@ -18,11 +18,11 @@ class SupplierController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'ruc' => 'required|integer|digits:11',
+            'ruc' => 'required|string|max:11',
             'company_name' => 'required|string|max:255',
-            'address' => 'required|string',
+            'address' => 'required|string|max:255',
             'phone_number' => 'required|string|max:20',
-            'email' => 'required|email',
+            'email' => 'required|email|max:255',
         ]);
 
         try {
@@ -47,11 +47,11 @@ class SupplierController extends Controller
     public function update(Request $request, string $id)
     {
         $validator = Validator::make($request->all(), [
-            'ruc' => 'required|integer',
+            'ruc' => 'required|string|max:11',
             'company_name' => 'required|string|max:255',
-            'address' => 'required|string',
+            'address' => 'required|string|max:255',
             'phone_number' => 'required|string|max:20',
-            'email' => 'required|email',
+            'email' => 'required|email|max:255',
         ]);
 
         try {

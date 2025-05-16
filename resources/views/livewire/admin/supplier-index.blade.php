@@ -62,7 +62,7 @@
                     <label for="company_name" class="block text-sm font-medium text-zinc-300 mb-1">
                         Razon social <span class="text-red-500">*</span>
                     </label>
-                    <input type="text" id="company_name" name="company_name"
+                    <input type="text" id="company_name" name="company_name" maxlength="255"
                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
                         placeholder="Ej: Ferreteria Pedro" required data-flux-control>
                     @error('company_name')
@@ -75,7 +75,7 @@
                     <label for="address" class="block text-sm font-medium text-zinc-300 mb-1">
                         Dirección <span class="text-red-500">*</span>
                     </label>
-                    <input type="text" id="address" name="address"
+                    <input type="text" id="address" name="address" maxlength="255"
                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
                         placeholder="Ej: Calle 123 Cusco" required data-flux-control>
                     @error('address')
@@ -104,7 +104,7 @@
                     <label for="email" class="block text-sm font-medium text-zinc-300 mb-1">
                         Email <span class="text-red-500">*</span>
                     </label>
-                    <input type="email" id="email" name="email"
+                    <input type="email" id="email" name="email" maxlength="255"
                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
                         placeholder="Ej: ejemplo@gmail.com" required data-flux-control>
                     @error('email')
@@ -138,10 +138,10 @@
     </div>
 </div>
 <script>
-document.getElementById('phone_number').addEventListener('input', function (e) {
-    e.target.value = e.target.value.replace(/[^0-9]/g, '');
-});
-document.getElementById('ruc').addEventListener('input', function (e) {
-    e.target.value = e.target.value.replace(/[^0-9]/g, '');
-});
+    document.getElementById('phone_number').addEventListener('input', function (e) {
+        e.target.value = e.target.value.replace(/[^0-9]/g, '');
+    });
+    document.getElementById('ruc').addEventListener('input', function (e) {
+        e.target.value = e.target.value.replace(/[^0-9]/g, '');
+    });
 </script>
