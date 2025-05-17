@@ -108,9 +108,10 @@
                     <label for="sale_price" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
                         Precio de Venta <span class="text-red-500">*</span>
                     </label>
-                    <input type="text" id="sale_price" name="sale_price" step="0.01" max="99999999.99" min="0" maxlength="12"
+                    <input type="text" id="sale_price" name="sale_price"
+                        step="0.01" pattern="[0-9]{1,10.2}" inputmode="numeric" maxlength="10.2"
                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
-                        placeholder="Ej: 12.50" required step="0.01" min="0" data-flux-control>
+                        placeholder="Ej: 12.50" required data-flux-control>
                     @error('sale_price')
                         <p class="mt-1 text-sm text-red-500 font-medium" data-flux-component="error">{{ $message }}</p>
                     @enderror
@@ -120,9 +121,10 @@
                     <label for="purchase_price" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
                         Precio de Compra <span class="text-red-500">*</span>
                     </label>
-                    <input type="number" id="purchase_price" name="purchase_price" step="0.01" max="99999999.99" min="0"
+                    <input type="text" id="purchase_price" name="purchase_price"
+                        step="0.01" pattern="[0-9]{1,10.2}" inputmode="numeric" maxlength="10.2"
                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
-                        placeholder="Ej: 10.00" required step="0.01" min="0" data-flux-control>
+                        placeholder="Ej: 10.00" required data-flux-control>
                     @error('purchase_price')
                         <p class="mt-1 text-sm text-red-500 font-medium" data-flux-component="error">{{ $message }}</p>
                     @enderror
@@ -133,6 +135,7 @@
                         Stock <span class="text-red-500">*</span>
                     </label>
                     <input type="text" id="stock" name="stock"
+                        pattern="[0-9]{1,11}" inputmode="numeric" maxlength="11"
                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
                         placeholder="Ej: 100" required min="0" step="1" oninput="this.value = Math.floor(this.value)"
                         data-flux-control>
@@ -146,6 +149,7 @@
                         Stock Mínimo <span class="text-red-500">*</span>
                     </label>
                     <input type="text" id="min_stock" name="min_stock"
+                        pattern="[0-9]{1,11}" inputmode="numeric" maxlength="11"
                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
                         placeholder="Ej: 10" required min="0" step="1" oninput="this.value = Math.floor(this.value)"
                         data-flux-control>
