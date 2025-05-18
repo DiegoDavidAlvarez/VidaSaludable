@@ -78,9 +78,9 @@
                         Total <span class="text-red-500">*</span>
                     </label>
                     <input type="text" step="0.01" id="total" name="total"
-                        step="0.01" pattern="[0-9]{1,10.2}" inputmode="numeric" maxlength="10.2"
+                        inputmode="numeric"
                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
-                        placeholder="Ej: 10.50" required maxlength="50" data-flux-control>
+                        placeholder="Ej: 10.50" required data-flux-control>
                     @error('total')
                         <p class="mt-1 text-sm text-red-500 font-medium" data-flux-component="error">{{ $message }}</p>
                     @enderror
@@ -114,12 +114,16 @@
     </div>
 </div>
 <script>
-    document.getElementById('total').addEventListener('input', function (e) {
-        e.target.value = e.target.value.replace(/[^0-9\.]/g, '');
-        
-        const parts = e.target.value.split('.');
-        if (parts.length > 2) {
-            e.target.value = parts[0] + '.' + parts.slice(1).join('');
+    const totalInput = document.getElementById('total');
+    let lastValidValue = totalInput.value;
+
+    totalInput.addEventListener('input', function() {
+        const currentValue = this.value;
+        const pattern = /^\d{0,8}(\.\d{0,2})?$/;
+        if (pattern.test(currentValue)) {
+            lastValidValue = currentValue;
+        } else {
+            this.value = lastValidValue;
         }
     });
 </script>
