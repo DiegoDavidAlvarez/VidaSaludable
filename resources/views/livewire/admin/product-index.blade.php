@@ -109,7 +109,7 @@
                         Precio de Venta <span class="text-red-500">*</span>
                     </label>
                     <input type="text" id="sale_price" name="sale_price"
-                        step="0.01" pattern="[0-9]{1,10.2}" inputmode="numeric" maxlength="10.2"
+                        inputmode="numeric"
                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
                         placeholder="Ej: 12.50" required data-flux-control>
                     @error('sale_price')
@@ -122,7 +122,7 @@
                         Precio de Compra <span class="text-red-500">*</span>
                     </label>
                     <input type="text" id="purchase_price" name="purchase_price"
-                        step="0.01" pattern="[0-9]{1,10.2}" inputmode="numeric" maxlength="10.2"
+                        inputmode="numeric"
                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
                         placeholder="Ej: 10.00" required data-flux-control>
                     @error('purchase_price')
@@ -135,10 +135,9 @@
                         Stock <span class="text-red-500">*</span>
                     </label>
                     <input type="text" id="stock" name="stock"
-                        pattern="[0-9]{1,9}" maxlength="9" inputmode="numeric"
+                        pattern="[0-9]{1,10}" maxlength="10" inputmode="numeric"
                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
-                        placeholder="Ej: 100" required min="0" step="1" oninput="this.value = Math.floor(this.value)"
-                        data-flux-control>
+                        placeholder="Ej: 100" required data-flux-control>
                     @error('stock')
                         <p class="mt-1 text-sm text-red-500 font-medium" data-flux-component="error">{{ $message }}</p>
                     @enderror
@@ -149,10 +148,9 @@
                         Stock Mínimo <span class="text-red-500">*</span>
                     </label>
                     <input type="text" id="min_stock" name="min_stock"
-                        pattern="[0-9]{1,9}" maxlength="9" inputmode="numeric"
+                        pattern="[0-9]{1,10}" maxlength="10" inputmode="numeric"
                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
-                        placeholder="Ej: 10" required min="0" step="1" oninput="this.value = Math.floor(this.value)"
-                        data-flux-control>
+                        placeholder="Ej: 10" required data-flux-control>
                     @error('min_stock')
                         <p class="mt-1 text-sm text-red-500 font-medium" data-flux-component="error">{{ $message }}</p>
                     @enderror
@@ -194,26 +192,38 @@
     document.getElementById('bar_code').addEventListener('input', function (e) {
         e.target.value = e.target.value.replace(/[^0-9]/g, '');
     });
+
     document.getElementById('stock').addEventListener('input', function (e) {
         e.target.value = e.target.value.replace(/[^0-9]/g, '');
     });
+
     document.getElementById('min_stock').addEventListener('input', function (e) {
         e.target.value = e.target.value.replace(/[^0-9]/g, '');
     });
-    document.getElementById('sale_price').addEventListener('input', function (e) {
-        e.target.value = e.target.value.replace(/[^0-9\.]/g, '');
-        
-        const parts = e.target.value.split('.');
-        if (parts.length > 2) {
-            e.target.value = parts[0] + '.' + parts.slice(1).join('');
+    
+    const totalInputSale = document.getElementById('sale_price');
+    let lastValidValueSale = totalInputSale.value;
+
+    totalInputSale.addEventListener('input', function() {
+        const currentValueSale = this.value;
+        const patternSale = /^\d{0,8}(\.\d{0,2})?$/;
+        if (patternSale.test(currentValueSale)) {
+            lastValidValueSale = currentValueSale;
+        } else {
+            this.value = lastValidValueSale;
         }
     });
-    document.getElementById('purchase_price').addEventListener('input', function (e) {
-        e.target.value = e.target.value.replace(/[^0-9\.]/g, '');
-        
-        const parts = e.target.value.split('.');
-        if (parts.length > 2) {
-            e.target.value = parts[0] + '.' + parts.slice(1).join('');
+
+    const totalInputPurchase = document.getElementById('purchase_price');
+    let lastValidValuePurchase = totalInputPurchase.value;
+
+    totalInputPurchase.addEventListener('input', function() {
+        const currentValuePurchase = this.value;
+        const patternPurchase = /^\d{0,8}(\.\d{0,2})?$/;
+        if (patternPurchase.test(currentValuePurchase)) {
+            lastValidValuePurchase = currentValuePurchase;
+        } else {
+            this.value = lastValidValuePurchase;
         }
     });
 </script>
