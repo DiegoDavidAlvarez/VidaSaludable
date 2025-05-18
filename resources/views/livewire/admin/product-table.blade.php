@@ -41,7 +41,6 @@
                 Lista de Productos
             </h1>
         </div>
-
         <div class="overflow-x-auto">
             <table class="w-full">
                 <thead class="bg-zinc-800">
@@ -82,6 +81,7 @@
                             <td class="px-4 py-4 text-sm text-right">
                                 <!-- Botón Editar -->
                                 <button
+                                    class="text-blue-500 hover:text-blue-400 mr-3"
                                     @click="openModal({{ $product->id }}, 
                                     '{{ addslashes($product->category->name) }}', 
                                     '{{ addslashes($product->supplier->company_name) }}', 
@@ -91,15 +91,13 @@
                                     '{{ addslashes($product->sale_price) }}', 
                                     '{{ addslashes($product->purchase_price) }}', 
                                     '{{ addslashes($product->stock) }}', 
-                                    '{{ addslashes($product->min_stock) }}')"
-                                    class="text-blue-500 hover:text-blue-400 mr-3">
+                                    '{{ addslashes($product->min_stock) }}')">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
                                         fill="currentColor">
                                         <path
                                             d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                                     </svg>
                                 </button>
-
                                 <!-- Botón Eliminar -->
                                 <button onclick="confirmDelete({{ $product->id }})"
                                     class="text-red-500 hover:text-red-400">
@@ -110,7 +108,6 @@
                                             clip-rule="evenodd" />
                                     </svg>
                                 </button>
-
                                 <!-- Formulario Eliminar (oculto) -->
                                 <form id="delete-form-{{ $product->id }}"
                                     action="{{ route('admin.product.destroy', $product->id) }}" method="POST"
@@ -150,142 +147,142 @@
                     <form :action="'/admin/product/' + currentId" method="POST">
                         @csrf
                         @method('PUT')
-
                         <div class="px-8 py-8">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Campo Categoría -->
-                <div data-flux-field>
-                    <label for="category_id" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
-                        Categoría <span class="text-red-500">*</span>
-                    </label>
-                    <select id="category_id" name="category_id"
-                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white"
-                        required data-flux-control>
-                        <option value="" disabled selected>Seleccione una categoría</option>
-                        @foreach ($categories as $category)
-                            <option value="{{ $category->id }}" selected>{{ $category->name }}</option>
-                        @endforeach
-                    </select>
-                    @error('category_id')
-                        <p class="mt-1 text-sm text-red-500 font-medium" data-flux-component="error">{{ $message }}</p>
-                    @enderror
-                </div>
-                <!-- Campo Proveedor -->
-                <div data-flux-field>
-                    <label for="supplier_id" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
-                        Proveedor <span class="text-red-500">*</span>
-                    </label>
-                    <select id="supplier_id" name="supplier_id"
-                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white"
-                        required data-flux-control>
-                        <option value="" disabled selected>Seleccione un proveedor</option>
-                        @foreach ($suppliers as $supplier)
-                            <option value="{{ $supplier->id }}" selected>{{ $supplier->company_name }}</option>
-                        @endforeach
-                    </select>
-                    @error('supplier_id')
-                        <p class="mt-1 text-sm text-red-500 font-medium" data-flux-component="error">{{ $message }}</p>
-                    @enderror
-                </div>
-                <!-- Campo Nombre -->
-                <div data-flux-field>
-                    <label for="name" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
-                        Nombre <span class="text-red-500">*</span>
-                    </label>
-                    <input type="text" id="name" name="name" x-model="currentName"
-                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
-                        placeholder="Ej: Paracetamol 500mg" required maxlength="255" data-flux-control>
-                    @error('name')
-                        <p class="mt-1 text-sm text-red-500 font-medium" data-flux-component="error">{{ $message }}</p>
-                    @enderror
-                </div>
-                <!-- Campo Código de Barra -->
-                <div data-flux-field>
-                    <label for="bar_code" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
-                        Código de Barra <span class="text-red-500">*</span>
-                    </label>
-                    <input type="text" id="bar_code" name="bar_code" x-model="currentBarCode"
-                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
-                        placeholder="Ej: 012345678912" required maxlength="50" data-flux-control>
-                    @error('bar_code')
-                        <p class="mt-1 text-sm text-red-500 font-medium" data-flux-component="error">{{ $message }}</p>
-                    @enderror
-                </div>
-                <!-- Campo Precio de Venta -->
-                <div data-flux-field>
-                    <label for="sale_price" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
-                        Precio de Venta <span class="text-red-500">*</span>
-                    </label>
-                    <input type="number" id="sale_price" name="sale_price" x-model="currentSalePrice"
-                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
-                        placeholder="Ej: 12.50" required step="0.01" min="0" data-flux-control>
-                    @error('sale_price')
-                        <p class="mt-1 text-sm text-red-500 font-medium" data-flux-component="error">{{ $message }}</p>
-                    @enderror
-                </div>
-                <!-- Campo Precio de Compra -->
-                <div data-flux-field>
-                    <label for="purchase_price" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
-                        Precio de Compra <span class="text-red-500">*</span>
-                    </label>
-                    <input type="number" id="purchase_price" name="purchase_price" x-model="currentPurchasePrice"
-                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
-                        placeholder="Ej: 10.00" required step="0.01" min="0" data-flux-control>
-                    @error('purchase_price')
-                        <p class="mt-1 text-sm text-red-500 font-medium" data-flux-component="error">{{ $message }}</p>
-                    @enderror
-                </div>
-                <!-- Campo Stock -->
-                <div data-flux-field>
-                    <label for="stock" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
-                        Stock <span class="text-red-500">*</span>
-                    </label>
-                    <input type="number" id="stock" name="stock" x-model="currentStock"
-                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
-                        placeholder="Ej: 100" required min="0" step="1" oninput="this.value = Math.floor(this.value)"
-                        data-flux-control>
-                    @error('stock')
-                        <p class="mt-1 text-sm text-red-500 font-medium" data-flux-component="error">{{ $message }}</p>
-                    @enderror
-                </div>
-                <!-- Campo Stock Mínimo -->
-                <div data-flux-field>
-                    <label for="min_stock" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
-                        Stock Mínimo <span class="text-red-500">*</span>
-                    </label>
-                    <input type="number" id="min_stock" name="min_stock" x-model="currentMinStock"
-                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
-                        placeholder="Ej: 10" required min="0" step="1" oninput="this.value = Math.floor(this.value)"
-                        data-flux-control>
-                    @error('min_stock')
-                        <p class="mt-1 text-sm text-red-500 font-medium" data-flux-component="error">{{ $message }}</p>
-                    @enderror
-                </div>
-            </div>
-            <!-- Campo Descripción -->
-            <div data-flux-field>
-                <label for="description" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
-                    Descripción
-                </label>
-                <textarea id="description" name="description" rows="4" x-model="currentDescription"
-                    class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
-                    placeholder="Ej: Tabletas para el dolor de cabeza" data-flux-control></textarea>
-                @error('description')
-                    <p class="mt-1 text-sm text-red-500 font-medium" data-flux-component="error">{{ $message }}</p>
-                @enderror
-            </div>
-            <div class="relative my-8">
-                <div class="absolute inset-0 flex items-center">
-                    <div class="w-full border-t border-zinc-800"></div>
-                </div>
-            </div>
-            <!-- Nota de campos obligatorios -->
-            <div class="text-sm text-zinc-500 mb-6">
-                Campos marcados con <span class="text-red-500 font-bold">*</span> son obligatorios
-            </div>
+                                <!-- Campo Categoría -->
+                                <div data-flux-field>
+                                    <label for="category_id" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
+                                        Categoría <span class="text-red-500">*</span>
+                                    </label>
+                                    <select id="category_id" name="category_id"
+                                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white"
+                                        required data-flux-control>
+                                        <option value="" disabled selected>Seleccione una categoría</option>
+                                        @foreach ($categories as $category)
+                                            <option value="{{ $category->id }}" selected>{{ $category->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('category_id')
+                                        <p class="mt-1 text-sm text-red-500 font-medium" data-flux-component="error">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <!-- Campo Proveedor -->
+                                <div data-flux-field>
+                                    <label for="supplier_id" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
+                                        Proveedor <span class="text-red-500">*</span>
+                                    </label>
+                                    <select id="supplier_id" name="supplier_id"
+                                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white"
+                                        required data-flux-control>
+                                        <option value="" disabled selected>Seleccione un proveedor</option>
+                                        @foreach ($suppliers as $supplier)
+                                            <option value="{{ $supplier->id }}" selected>{{ $supplier->company_name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('supplier_id')
+                                        <p class="mt-1 text-sm text-red-500 font-medium" data-flux-component="error">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <!-- Campo Nombre -->
+                                <div data-flux-field>
+                                    <label for="name" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
+                                        Nombre <span class="text-red-500">*</span>
+                                    </label>
+                                    <input type="text" id="name" name="name" x-model="currentName" maxlength="255"
+                                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
+                                        placeholder="Ej: Paracetamol 500mg" required data-flux-control>
+                                    @error('name')
+                                        <p class="mt-1 text-sm text-red-500 font-medium" data-flux-component="error">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <!-- Campo Código de Barra -->
+                                <div data-flux-field>
+                                    <label for="bar_code" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
+                                        Código de Barra <span class="text-red-500">*</span>
+                                    </label>
+                                    <input type="text" id="bar_code" name="bar_code" x-model="currentBarCode"
+                                        pattern="[0-9]{1,50}" maxlength="50" inputmode="numeric"
+                                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
+                                        placeholder="Ej: 012345678912" required data-flux-control>
+                                    @error('bar_code')
+                                        <p class="mt-1 text-sm text-red-500 font-medium" data-flux-component="error">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <!-- Campo Precio de Venta -->
+                                <div data-flux-field>
+                                    <label for="sale_price" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
+                                        Precio de Venta <span class="text-red-500">*</span>
+                                    </label>
+                                    <input type="text" id="sale_price" name="sale_price" x-model="currentSalePrice"
+                                        inputmode="numeric"
+                                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
+                                        placeholder="Ej: 12.50" required data-flux-control>
+                                    @error('sale_price')
+                                        <p class="mt-1 text-sm text-red-500 font-medium" data-flux-component="error">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <!-- Campo Precio de Compra -->
+                                <div data-flux-field>
+                                    <label for="purchase_price" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
+                                        Precio de Compra <span class="text-red-500">*</span>
+                                    </label>
+                                    <input type="text" id="purchase_price" name="purchase_price" x-model="currentPurchasePrice"
+                                        inputmode="numeric"
+                                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
+                                        placeholder="Ej: 10.00" required data-flux-control>
+                                    @error('purchase_price')
+                                        <p class="mt-1 text-sm text-red-500 font-medium" data-flux-component="error">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <!-- Campo Stock -->
+                                <div data-flux-field>
+                                    <label for="stock" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
+                                        Stock <span class="text-red-500">*</span>
+                                    </label>
+                                    <input type="text" id="stock" name="stock" x-model="currentStock"
+                                        pattern="[0-9]{1,10}" maxlength="10" inputmode="numeric"
+                                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
+                                        placeholder="Ej: 100" required data-flux-control>
+                                    @error('stock')
+                                        <p class="mt-1 text-sm text-red-500 font-medium" data-flux-component="error">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <!-- Campo Stock Mínimo -->
+                                <div data-flux-field>
+                                    <label for="min_stock" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
+                                        Stock Mínimo <span class="text-red-500">*</span>
+                                    </label>
+                                    <input type="text" id="min_stock" name="min_stock" x-model="currentMinStock"
+                                        pattern="[0-9]{1,10}" maxlength="10" inputmode="numeric"
+                                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
+                                        placeholder="Ej: 10" required data-flux-control>
+                                    @error('min_stock')
+                                        <p class="mt-1 text-sm text-red-500 font-medium" data-flux-component="error">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            </div>
+                            <!-- Campo Descripción -->
+                            <div data-flux-field>
+                                <label for="description" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
+                                    Descripción
+                                </label>
+                                <textarea id="description" name="description" rows="4" x-model="currentDescription"
+                                    class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
+                                    placeholder="Ej: Tabletas para el dolor de cabeza" data-flux-control></textarea>
+                                @error('description')
+                                    <p class="mt-1 text-sm text-red-500 font-medium" data-flux-component="error">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div class="relative my-8">
+                                <div class="absolute inset-0 flex items-center">
+                                    <div class="w-full border-t border-zinc-800"></div>
+                                </div>
+                            </div>
+                            <!-- Nota de campos obligatorios -->
+                            <div class="text-sm text-zinc-500 mb-6">
+                                Campos marcados con <span class="text-red-500 font-bold">*</span> son obligatorios
+                            </div>
                         </div>
-                        
-
                         <div class="px-8 py-4 bg-zinc-800 flex justify-end space-x-4">
                             <button type="button" @click="closeModal" class="px-6 py-3 text-zinc-300 hover:text-white">
                                 Cancelar
@@ -301,7 +298,6 @@
         </div>
     </template>
 </div>
-
 <script>
     // Función para confirmar eliminación
     function confirmDelete(id) {
@@ -353,7 +349,6 @@
                 this.currentPurchasePrice = purchasePrice;
                 this.currentStock = stock;
                 this.currentMinStock = minStock;
-
                 this.isOpen = true;
                 document.body.classList.add('overflow-hidden');
             },
