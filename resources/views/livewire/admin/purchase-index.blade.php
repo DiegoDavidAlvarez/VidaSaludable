@@ -39,7 +39,7 @@
 
     <div class="w-full bg-zinc-900 rounded-xl shadow-2xl overflow-hidden p-6 border border-zinc-800">
         <h1 class="text-2xl font-bold text-white mb-6" data-flux-component="heading">
-            Registrar Nueva Venta
+            Registrar Nueva Compra
         </h1>
         <form action="{{ route('admin.purchase.store') }}" method="POST" class="space-y-6" data-flux-component="form">
             @csrf
@@ -77,7 +77,8 @@
                     <label for="total" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
                         Total <span class="text-red-500">*</span>
                     </label>
-                    <input type="number" step="0.01" id="total" name="total"
+                    <input type="text" step="0.01" id="total" name="total"
+                        step="0.01" pattern="[0-9]{1,10.2}" inputmode="numeric" maxlength="10.2"
                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
                         placeholder="Ej: 10.50" required maxlength="50" data-flux-control>
                     @error('total')
@@ -106,9 +107,19 @@
                 <button type="submit"
                     class="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-zinc-900 transition-all duration-200 shadow-lg hover:shadow-xl"
                     data-flux-component="button">
-                    Registrar Producto
+                    Registrar Compra
                 </button>
             </div>
         </form>
     </div>
 </div>
+<script>
+    document.getElementById('total').addEventListener('input', function (e) {
+        e.target.value = e.target.value.replace(/[^0-9\.]/g, '');
+        
+        const parts = e.target.value.split('.');
+        if (parts.length > 2) {
+            e.target.value = parts[0] + '.' + parts.slice(1).join('');
+        }
+    });
+</script>
