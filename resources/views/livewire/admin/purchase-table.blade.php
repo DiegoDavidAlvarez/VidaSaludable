@@ -180,7 +180,7 @@
                     <select id="receipt_type" name="receipt_type" x-model="currentReceiptType"
                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white"
                         required data-flux-control>
-                        <option value="" disabled selected></option>
+                        <option value="" disabled selected>Selecciona un tipo de comprobante</option>
                         <option value="Boleta">Boleta</option>
                         <option value="Factura">Factura</option>
                     </select>
