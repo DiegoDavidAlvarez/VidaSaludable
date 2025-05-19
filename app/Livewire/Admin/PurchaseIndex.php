@@ -11,7 +11,9 @@ class PurchaseIndex extends Component
     public function render()
     {
         $users = User::all();
-        $suppliers = Supplier::all();
+        $suppliers = Supplier::where('status', 1)
+            ->orderBy('created_at', 'desc')
+            ->paginate(0);
         return view('livewire.admin.purchase-index', compact('users', 'suppliers'));
     }
 }
