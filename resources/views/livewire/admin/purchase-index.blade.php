@@ -90,9 +90,12 @@
                     <label for="receipt_type" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
                         Tipo de comprobante <span class="text-red-500">*</span>
                     </label>
-                    <input type="text" id="receipt_type" name="receipt_type"
-                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
-                        placeholder="Ej: Boleta" required step="0.01" min="0" data-flux-control>
+                    <select name="receipt_type" id="receipt_type" required
+                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white"
+                        data-flux-control>
+                        <option value="Boleta">Boleta</option>
+                        <option value="Factura">Factura</option>
+                    </select>
                     @error('receipt_type')
                         <p class="mt-1 text-sm text-red-500 font-medium" data-flux-component="error">{{ $message }}</p>
                     @enderror

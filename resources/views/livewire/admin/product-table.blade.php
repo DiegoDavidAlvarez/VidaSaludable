@@ -83,8 +83,8 @@
                                 <button
                                     class="text-blue-500 hover:text-blue-400 mr-3"
                                     @click="openModal({{ $product->id }}, 
-                                    '{{ addslashes($product->category->name) }}', 
-                                    '{{ addslashes($product->supplier->company_name) }}', 
+                                    '{{ addslashes($product->category->id) }}', 
+                                    '{{ addslashes($product->supplier->id) }}', 
                                     '{{ addslashes($product->name) }}', 
                                     '{{ addslashes($product->description) }}', 
                                     '{{ addslashes($product->bar_code) }}', 
@@ -154,12 +154,12 @@
                                     <label for="category_id" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
                                         Categoría <span class="text-red-500">*</span>
                                     </label>
-                                    <select id="category_id" name="category_id"
+                                    <select id="category_id" name="category_id" x-model="currentCategoryId"
                                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white"
                                         required data-flux-control>
-                                        <option value="" disabled selected>Seleccione una categoría</option>
+                                        <option value="" disabled >Seleccione una categoria</option>
                                         @foreach ($categories as $category)
-                                            <option value="{{ $category->id }}" selected>{{ $category->name }}</option>
+                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
                                         @endforeach
                                     </select>
                                     @error('category_id')
@@ -171,12 +171,12 @@
                                     <label for="supplier_id" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
                                         Proveedor <span class="text-red-500">*</span>
                                     </label>
-                                    <select id="supplier_id" name="supplier_id"
+                                    <select id="supplier_id" name="supplier_id" x-model="currentSupplierId"
                                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white"
                                         required data-flux-control>
-                                        <option value="" disabled selected>Seleccione un proveedor</option>
+                                        <option value="" disabled>Seleccione un proveedor</option>
                                         @foreach ($suppliers as $supplier)
-                                            <option value="{{ $supplier->id }}" selected>{{ $supplier->company_name }}</option>
+                                            <option value="{{ $supplier->id }}">{{ $supplier->company_name }}</option>
                                         @endforeach
                                     </select>
                                     @error('supplier_id')
@@ -328,8 +328,8 @@
         return {
             isOpen: false,
             currentId: null,
-            currentCategoryName: null,
-            currentSupplierCompanyName: null,
+            currentCategoryId: null,
+            currentSupplierId: null,
             currentName: null,
             currentDescription: null,
             currentBarCode: null,
@@ -338,10 +338,10 @@
             currentStock: null,
             currentMinStock: null,
 
-            openModal(id, categoryName, supplierCompanyName, name, description, barCode, salePrice, purchasePrice, stock, minStock) {
+            openModal(id, currentCategoryId, currentSupplierId, name, description, barCode, salePrice, purchasePrice, stock, minStock) {
                 this.currentId = id;
-                this.currentCategoryName = categoryName;
-                this.currentSupplierCompanyName = supplierCompanyName;
+                this.currentCategoryId = currentCategoryId;
+                this.currentSupplierId = currentSupplierId;
                 this.currentName = name;
                 this.currentDescription = description;
                 this.currentBarCode = barCode;

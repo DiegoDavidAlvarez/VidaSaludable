@@ -12,7 +12,9 @@ class PurchaseTable extends Component
     public function render()
     {
         $users = User::all();
-        $suppliers = Supplier::all();
+        $suppliers = Supplier::where('status', 1)
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
         $purchases = Purchase::where('id', '!=', null)
             ->orderBy('created_at', 'desc')
             ->paginate(10);

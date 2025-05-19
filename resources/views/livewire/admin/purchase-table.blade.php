@@ -66,7 +66,7 @@
                                 <!-- Botón Editar -->
                                 <button
                                     @click="openModal({{ $purchase->id }}, 
-                                    '{{ addslashes($purchase->supplier->company_name) }}',
+                                    '{{ addslashes($purchase->supplier->id) }}',
                                     '{{ \Carbon\Carbon::parse($purchase->date)->format('Y-m-d') }}', 
                                     '{{ addslashes($purchase->total) }}', 
                                     '{{ addslashes($purchase->receipt_type) }}')"
@@ -136,10 +136,10 @@
                     <label for="supplier_id" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
                         Proveedor <span class="text-red-500">*</span>
                     </label>
-                    <select id="supplier_id" name="supplier_id"
+                    <select id="supplier_id" name="supplier_id" x-model="currentSupplierId"
                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white"
                         required data-flux-control>
-                        <option value="" disabled selected>Seleccione un proveedor</option>
+                        <option value="" disabled>Seleccione un proveedor</option>
                         @foreach ($suppliers as $supplier)
                             <option value="{{ $supplier->id }}" selected>{{ $supplier->company_name }}</option>
                         @endforeach
@@ -177,9 +177,13 @@
                     <label for="receipt_type" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
                         Tipo de comprobante <span class="text-red-500">*</span>
                     </label>
-                    <input type="text" id="receipt_type" name="receipt_type" x-model="currentReceiptType"
-                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
-                        placeholder="Ej: Boleta" required data-flux-control>
+                    <select id="receipt_type" name="receipt_type" x-model="currentReceiptType"
+                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white"
+                        required data-flux-control>
+                        <option value="" disabled selected></option>
+                        <option value="Boleta">Boleta</option>
+                        <option value="Factura">Factura</option>
+                    </select>
                     @error('receipt_type')
                         <p class="mt-1 text-sm text-red-500 font-medium" data-flux-component="error">{{ $message }}</p>
                     @enderror
@@ -243,14 +247,14 @@
         return {
             isOpen: false,
             currentId: null,
-            currentSupplierCompanyName: null,
+            currentSupplierId: null,
             currentDate: null,
             currentTotal: null,
             currentReceiptType: null,
 
-            openModal(id, supplierCompanyName, date, total, receiptType) {
+            openModal(id, supplierId, date, total, receiptType) {
                 this.currentId = id,
-                this.currentSupplierCompanyName = supplierCompanyName,
+                this.currentSupplierId = supplierId,
                 this.currentDate = date,
                 this.currentTotal = total,
                 this.currentReceiptType = receiptType,
