@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\CategoriaController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProveedorController;
 use App\Http\Controllers\Admin\PurchaseController;
+use App\Http\Controllers\Admin\PurchaseDetailController;
 use App\Http\Controllers\Admin\SupplierController;
 use App\Models\Supplier;
 use Illuminate\Support\Facades\Route;
@@ -30,6 +31,7 @@ Route::prefix('admin')->group(function () {
     Route::resource('supplier', SupplierController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.supplier');
     Route::resource('product', ProductController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.product');
     Route::resource('purchase', PurchaseController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.purchase');
+    Route::resource('purchase_detail', PurchaseDetailController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.purchase_detail');
 });
 
 require __DIR__.'/auth.php';

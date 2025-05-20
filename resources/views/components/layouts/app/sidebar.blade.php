@@ -18,28 +18,10 @@
                     <flux:navlist.item icon="user" :href="route('admin.supplier.index')" :current="request()->routeIs('admin.supplier.index')" wire:navigate>{{ __('Proveedor') }}</flux:navlist.item>
                     <flux:navlist.item icon="cube" :href="route('admin.product.index')" :current="request()->routeIs('admin.product.index')" wire:navigate>{{ __('Producto') }}</flux:navlist.item>
                     {{-- <flux:navlist.item icon="banknotes" :href="route('admin.purchase.index')" :current="request()->routeIs('admin.purchase.index')" wire:navigate>{{ __('Compra') }}</flux:navlist.item> --}}
-                    <div x-data="{ open: {{ request()->routeIs('admin.supplier.index', 'admin.product.index', 'admin.purchase.index') ? 'true' : 'false' }} }" class="w-full">
-                        {{-- Botón del dropdown --}}
-                        <button @click="open = !open"
-                            class="flex items-center gap-2 px-4 py-2 w-full text-left hover:bg-gray-700 hover:text-white rounded-lg transition-colors">
-                            <x-icon name="folder" class="w-5 h-5" />
-                            <span>{{ __('Ventas') }}</span>
-                            <svg :class="{'rotate-180': open}" class="ml-auto w-4 h-4 transform transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                            </svg>
-                        </button>
-
-                        {{-- Ítems hijos del dropdown --}}
-                        <div x-show="open" class="ml-4 mt-1 space-y-1" x-transition>
-                            <flux:navlist.item icon="user" :href="route('admin.supplier.index')" :current="request()->routeIs('admin.supplier.index')" wire:navigate>
-                                {{ __('Proveedor') }}
-                            </flux:navlist.item>
-
-                            <flux:navlist.item icon="shopping-cart" :href="route('admin.purchase.index')" :current="request()->routeIs('admin.purchase.index')" wire:navigate>
-                                {{ __('Compra') }}
-                            </flux:navlist.item>
-                        </div>
-                    </div>
+                </flux:navlist.group>
+                <flux:navlist.group expandable heading="Compra" class="hidden lg:grid">
+                    <flux:navlist.item icon="shopping-cart" :href="route('admin.purchase.index')" :current="request()->routeIs('admin.compra.index')" wire:navigate>{{ __('Compra') }}</flux:navlist.item>
+                    <flux:navlist.item icon="clipboard-document-list" :href="route('admin.purchase_detail.index')" :current="request()->routeIs('admin.compra_detalle.index')" wire:navigate>{{ __('Detalle de compra') }}</flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>
             <flux:spacer />
