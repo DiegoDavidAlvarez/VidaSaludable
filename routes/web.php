@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CategoriaController;
+use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProveedorController;
 use App\Http\Controllers\Admin\PurchaseController;
@@ -32,6 +33,7 @@ Route::prefix('admin')->group(function () {
     Route::resource('product', ProductController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.product');
     Route::resource('purchase', PurchaseController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.purchase');
     Route::resource('purchase_detail', PurchaseDetailController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.purchase_detail');
+    Route::resource('customer', CustomerController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.customer');
 });
 
 require __DIR__.'/auth.php';
