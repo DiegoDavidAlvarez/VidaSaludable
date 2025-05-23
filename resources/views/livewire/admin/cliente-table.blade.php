@@ -1,5 +1,6 @@
 <head>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/alpinejs" defer></script> <!-- Asegúrate de incluir Alpine.js -->
 </head>
 <div class="w-full py-8 px-4 sm:px-6 lg:px-8" x-data="customerTable()">
     <!-- Notificaciones -->
@@ -37,7 +38,7 @@
         </script>
     @endif
 
-    <!-- Tabla de Detalles de Compra -->
+    <!-- Tabla de Clientes -->
     <div class="w-full bg-zinc-900 rounded-xl shadow-2xl overflow-hidden p-6 border border-zinc-800">
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-2xl font-bold text-white" data-flux-component="heading">
@@ -50,8 +51,8 @@
                 <thead class="bg-zinc-800">
                     <tr>
                         <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">#</th>
-                        <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">Tipo de documento</th>
-                        <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">n° documento</th>
+                        <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">Tipo de Documento</th>
+                        <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">Número de Documento</th>
                         <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">Nombres</th>
                         <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">Apellidos</th>
                         <th class="px-4 py-3 text-right text-sm font-medium text-zinc-300 uppercase">Acciones</th>
@@ -63,12 +64,12 @@
                             <td class="px-4 py-4 text-sm text-zinc-300">{{ $loop->iteration }}</td>
                             <td class="px-4 py-4 text-sm text-zinc-300">{{ $customer->tipo_documento }}</td>
                             <td class="px-4 py-4 text-sm text-zinc-300">{{ $customer->numero_documento }}</td>
-                            <td class="px-4 py-4 text-sm text-zinc-300">{{ $customer->nombres }}</td>
-                            <td class="px-4 py-4 text-sm text-zinc-300">{{ $customer->apellidos }}</td>
+                            <td class="px-4 py-4 text-sm text-zinc-300">{{ Str::limit($customer->nombres, 30) }}</td>
+                            <td class="px-4 py-4 text-sm text-zinc-300">{{ Str::limit($customer->apellidos, 30) }}</td>
                             <td class="px-4 py-4 text-sm text-right">
                                 <!-- Botón Editar -->
                                 <button
-                                    @click="openModal({{ $customer->id }}, {{ $customer->tipo_documento }}, {{ $customer->numero_documento }}, {{ $customer->nombres }}, {{ $customer->apellidos }})"
+                                    @click="openModal({{ $customer->id }}, '{{ addslashes($customer->tipo_documento) }}', '{{ addslashes($customer->numero_documento) }}', '{{ addslashes($customer->nombres) }}', '{{ addslashes($customer->apellidos) }}', {{ isset($customer->status) ? $customer->status : 1 }})"
                                     class="text-blue-500 hover:text-blue-400 mr-3">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
                                         fill="currentColor">
@@ -90,7 +91,7 @@
 
                                 <!-- Formulario Eliminar (oculto) -->
                                 <form id="delete-form-{{ $customer->id }}"
-                                    action="{{ route('admin.customer.destroy', $customer->id) }}" method="POST"
+                                    action="{{ route('admin.cliente.destroy', $customer->id) }}" method="POST"
                                     class="hidden">
                                     @csrf
                                     @method('DELETE')
@@ -110,7 +111,6 @@
         @endif
     </div>
 
-    <!-- Modal de Edición -->
     <template x-teleport="body">
         <div x-show="isOpen" x-cloak x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0"
             x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200"
@@ -125,68 +125,48 @@
                 <!-- Contenido del Modal -->
                 <div
                     class="inline-block align-bottom bg-zinc-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full border border-zinc-800">
-                    <form :action="'/admin/customer/' + currentId" method="POST">
+                    <form :action="'/admin/cliente/' + currentId" method="POST">
                         @csrf
                         @method('PUT')
 
                         <div class="px-8 py-8">
-                            <h3 class="text-xl font-semibold text-white mb-6">Editar Detalle de Compra</h3>
+                            <h3 class="text-xl font-semibold text-white mb-6">Editar Cliente</h3>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <!-- Campo Compra -->
-                                <div data-flux-field>
-                                    <label for="tipo_documento" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
-                                        Tipo de documento <span class="text-red-500">*</span>
-                                    </label>
-                                    <select id="tipo_documento" name="tipo_documento" x-model="currentDocumentType"
-                                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white"
-                                        required data-flux-control>
-                                        <option value="" disabled selected>Seleccione una compra</option>
-                                        <option value="dni">DNI</option>
-                                        <option value="ruc">RUC</option>
+                                <!-- Campo Tipo de Documento -->
+                                <div>
+                                    <label class="block text-sm font-medium text-zinc-300 mb-2">Tipo de Documento</label>
+                                    <select x-model="currentTipoDocumento" name="tipo_documento"
+                                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                        required>
+                                        <option value="DNI">DNI</option>
+                                        <option value="CE">Carné de Extranjería</option>
                                     </select>
-                                    @error('tipo_documento')
-                                        <p class="mt-1 text-sm text-red-500 font-medium" data-flux-component="error">{{ $message }}</p>
-                                    @enderror
                                 </div>
-                                <!-- Campo Producto -->
-                                <div data-flux-field>
-                                    <label for="numero_documento" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
-                                        Numero de documento <span class="text-red-500">*</span>
-                                    </label>
-                                    <input type="number" id="numero_documento" name="numero_documento" x-model="currentDocumentNumber"
-                                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
-                                        placeholder="Ej: 1234567" required min="1" value="{{ old('numero_documento') }}"
-                                        data-flux-control>
-                                    @error('numero_documento')
-                                        <p class="mt-1 text-sm text-red-500 font-medium" data-flux-component="error">{{ $message }}</p>
-                                    @enderror
+                                <!-- Campo Número de Documento -->
+                                <div>
+                                    <label class="block text-sm font-medium text-zinc-300 mb-2">Número de Documento</label>
+                                    <input type="text" x-model="currentNumeroDocumento" name="numero_documento"
+                                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                        required pattern="\d{8}" maxlength="8"
+                                        oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                                 </div>
-                                <!-- Campo Cantidad -->
-                                <div data-flux-field>
-                                    <label for="nombres" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
-                                        Nombres <span class="text-red-500">*</span>
-                                    </label>
-                                    <input type="text" id="nombres" name="nombres" x-model="currentNames"
-                                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
-                                        placeholder="Ej: Pedro" required min="1" value="{{ old('nombres') }}"
-                                        data-flux-control>
-                                    @error('nombres')
-                                        <p class="mt-1 text-sm text-red-500 font-medium" data-flux-component="error">{{ $message }}</p>
-                                    @enderror
+                                <!-- Campo Nombres -->
+                                <div>
+                                    <label class="block text-sm font-medium text-zinc-300 mb-2">Nombres</label>
+                                    <input type="text" x-model="currentNombres" name="nombres"
+                                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                        required maxlength="100">
                                 </div>
-                                <div data-flux-field>
-                                    <label for="apellidos" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
-                                        Apellidos <span class="text-red-500">*</span>
-                                    </label>
-                                    <input type="text" id="apellidos" name="apellidos" x-model="currentLastNames"
-                                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
-                                        placeholder="Ej: Perez" required min="1" value="{{ old('apellidos') }}"
-                                        data-flux-control>
-                                    @error('apellidos')
-                                        <p class="mt-1 text-sm text-red-500 font-medium" data-flux-component="error">{{ $message }}</p>
-                                    @enderror
+                                <!-- Campo Apellidos -->
+                                <div>
+                                    <label class="block text-sm font-medium text-zinc-300 mb-2">Apellidos</label>
+                                    <input type="text" x-model="currentApellidos" name="apellidos"
+                                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                        required maxlength="100">
                                 </div>
+                                <!-- Campo Estado (oculto por ahora, asumiendo que no existe en customers) -->
+                                <input type="hidden" x-model="currentStatus" name="status">
                             </div>
                         </div>
 
@@ -210,7 +190,7 @@
     // Función para confirmar eliminación
     function confirmDelete(id) {
         Swal.fire({
-            title: '¿Eliminar detalle de compra?',
+            title: '¿Eliminar cliente?',
             text: "¡No podrás revertir esto!",
             icon: 'warning',
             background: '#18181b',
@@ -231,22 +211,24 @@
         });
     }
 
-    // Componente Alpine.js para la tabla de detalles
+    // Componente Alpine.js para la tabla
     function customerTable() {
         return {
             isOpen: false,
             currentId: null,
-            currentDocumentType: null,
-            currentDocumentNumber: null,
-            currentNames: null,
-            currentLastNames: null,
+            currentTipoDocumento: '',
+            currentNumeroDocumento: '',
+            currentNombres: '',
+            currentApellidos: '',
+            currentStatus: 1,
 
-            openModal(id, tipo_documento, numero_documento, nombres, apellidos) {
+            openModal(id, tipo_documento, numero_documento, nombres, apellidos, status) {
                 this.currentId = id;
-                this.currentDocumentType = tipo_documento;
-                this.currentDocumentNumber = numero_documento;
-                this.currentNames = nombres;
-                this.currentLastNames = apellidos;
+                this.currentTipoDocumento = tipo_documento;
+                this.currentNumeroDocumento = numero_documento;
+                this.currentNombres = nombres;
+                this.currentApellidos = apellidos;
+                this.currentStatus = status;
                 this.isOpen = true;
                 document.body.classList.add('overflow-hidden');
             },

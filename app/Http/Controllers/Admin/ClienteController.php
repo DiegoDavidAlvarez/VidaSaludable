@@ -4,17 +4,22 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
-use Illuminate\Container\Attributes\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
-class CustomerController extends Controller
+class ClienteController extends Controller
 {
     public function index()
     {
-        return view("admin.customer.index");
+        return view('admin.cliente.index');
+    }
+
+    public function create()
+    {
+        return view('admin.cliente.create');
     }
 
     public function consultarDni(Request $request)
@@ -45,7 +50,6 @@ class CustomerController extends Controller
             if ($response->successful()) {
                 $data = $response->json();
                 // Registrar la respuesta completa para depuración
-                /**@disregard Undefined method 'info'*/
                 Log::info('Respuesta de la API para DNI/CE', [
                     'dni' => $dni,
                     'tipo_documento' => $tipoDocumento,
@@ -64,7 +68,6 @@ class CustomerController extends Controller
                 return response()->json($normalizedData);
             } else {
                 $error = $response->json()['error'] ?? 'Respuesta no válida';
-                /**@disregard Undefined method 'error'*/
                 Log::error('Error en la consulta a la API', [
                     'dni' => $dni,
                     'status' => $response->status(),
@@ -75,7 +78,6 @@ class CustomerController extends Controller
                 ], 400);
             }
         } catch (\Exception $e) {
-            /**@disregard Undefined method 'error'*/
             Log::error('Excepción al consultar la API', [
                 'dni' => $dni,
                 'error' => $e->getMessage()
@@ -101,7 +103,7 @@ class CustomerController extends Controller
         if (empty($apellidos)) {
             // Intentar con otros posibles campos
             $apellidos = $data['nombreCompleto'] ?? $data['apellido'] ?? $data['apellidos_completos'] ?? '';
-            // Si nombreCompleto está presente, extraer solo los apellidos
+            // Si nombreCompleto está presente, extraer solo los apellidos (quitar nombres)
             if (!empty($apellidos) && isset($data['nombres'])) {
                 $apellidos = str_replace($data['nombres'], '', $apellidos);
                 $apellidos = trim($apellidos);
@@ -111,13 +113,38 @@ class CustomerController extends Controller
         return $apellidos;
     }
 
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'tipo_documento' => 'required|string|in:DNI,CE|max:20',
+            'numero_documento' => 'required|string|digits:8|unique:customers,numero_documento',
+            'nombres' => 'required|string|max:100',
+            'apellidos' => 'required|string|max:100',
+        ]);
+
+        try {
+            $validator->validate();
+
+            $customer = Customer::create([
+                'tipo_documento' => $request->tipo_documento,
+                'numero_documento' => $request->numero_documento,
+                'nombres' => $request->nombres,
+                'apellidos' => $request->apellidos,
+            ]);
+
+            return redirect()->route('admin.cliente.index')->with('success', 'El cliente fue registrado correctamente.');
+        } catch (ValidationException $e) {
+            return back()->withErrors($e->validator->errors())->withInput();
+        }
+    }
+
     public function update(Request $request, string $id)
     {
         $validator = Validator::make($request->all(), [
-            'tipo_documento' => 'required|in:dni,ruc',
-            'numero_documento' => 'required|string|max:15',
-            'nombres' => 'required|string|max:255',
-            'apellidos' => 'required|string|max:255',
+            'tipo_documento' => 'required|string|in:DNI,CE|max:20',
+            'numero_documento' => 'required|string|digits:8|unique:customers,numero_documento,' . $id,
+            'nombres' => 'required|string|max:100',
+            'apellidos' => 'required|string|max:100',
         ]);
 
         try {
@@ -131,9 +158,7 @@ class CustomerController extends Controller
                 'apellidos' => $request->apellidos,
             ]);
 
-            return redirect()->route('admin.customer.index')
-                ->with('success', 'El cliente fue actualizado correctamente.');
-
+            return redirect()->route('admin.cliente.index')->with('success', 'El cliente se actualizó correctamente.');
         } catch (ValidationException $e) {
             return back()->withErrors($e->validator->errors())->withInput();
         }
@@ -141,8 +166,7 @@ class CustomerController extends Controller
 
     public function destroy(string $id)
     {
-        $customer = Customer::find($id)->delete();
-        return redirect()->route('admin.customer.index')
-            ->with('success', 'El cliente fue eliminado correctamente.');
+        Customer::findOrFail($id)->delete();
+        return redirect()->route('admin.cliente.index')->with('success', 'El cliente fue eliminado correctamente.');
     }
 }

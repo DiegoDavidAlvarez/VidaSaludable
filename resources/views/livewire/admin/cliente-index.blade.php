@@ -1,7 +1,9 @@
 <head>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <div class="w-full py-8 px-4 sm:px-6 lg:px-8">
+    {{-- Alerta --}}
     @if (session('success'))
         <script>
             Swal.fire({
@@ -38,28 +40,27 @@
 
     <div class="w-full bg-zinc-900 rounded-xl shadow-2xl overflow-hidden p-6 border border-zinc-800">
         <h1 class="text-2xl font-bold text-white mb-6" data-flux-component="heading">
-            Registrar Cliente
+            Registrar Nuevo Cliente
         </h1>
-        <form action="{{ route('admin.customer.store') }}" method="POST" class="space-y-6" data-flux-component="form">
+        <form action="{{ route('admin.cliente.store') }}" method="POST" class="space-y-6" data-flux-component="form">
             @csrf
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Campo Compra -->
+                <!-- Campo Tipo de Documento -->
                 <div data-flux-field>
                     <label for="tipo_documento" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
-                        Tipo de documento <span class="text-red-500">*</span>
+                        Tipo de Documento <span class="text-red-500">*</span>
                     </label>
                     <select id="tipo_documento" name="tipo_documento"
-                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white"
+                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
                         required data-flux-control>
-                        <option value="" disabled selected>Seleccione una compra</option>
-                        <option value="dni">DNI</option>
-                        <option value="ruc">RUC</option>
+                        <option value="DNI">DNI</option>
+                        <option value="CE">Carné de Extranjería</option>
                     </select>
                     @error('tipo_documento')
                         <p class="mt-1 text-sm text-red-500 font-medium" data-flux-component="error">{{ $message }}</p>
                     @enderror
                 </div>
-                <!-- Campo Producto -->
+                <!-- Campo Número de Documento -->
                 <div data-flux-field>
                     <label for="numero_documento" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
                         Número de Documento <span class="text-red-500">*</span>
@@ -80,31 +81,33 @@
                         <p class="mt-1 text-sm text-red-500 font-medium" data-flux-component="error">{{ $message }}</p>
                     @enderror
                 </div>
-                <!-- Campo Cantidad -->
+                <!-- Campo Nombres -->
                 <div data-flux-field>
                     <label for="nombres" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
                         Nombres <span class="text-red-500">*</span>
                     </label>
                     <input type="text" id="nombres" name="nombres"
                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
-                        placeholder="Ej: Pedro" required min="1" value="{{ old('nombres') }}"
-                        data-flux-control>
+                        placeholder="Ej: Juan Carlos" required maxlength="100" data-flux-control>
                     @error('nombres')
                         <p class="mt-1 text-sm text-red-500 font-medium" data-flux-component="error">{{ $message }}</p>
                     @enderror
                 </div>
+                <!-- Campo Apellidos -->
                 <div data-flux-field>
                     <label for="apellidos" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
                         Apellidos <span class="text-red-500">*</span>
                     </label>
                     <input type="text" id="apellidos" name="apellidos"
                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
-                        placeholder="Ej: Perez" required min="1" value="{{ old('apellidos') }}"
-                        data-flux-control>
+                        placeholder="Ej: Pérez Gómez" required maxlength="100" data-flux-control>
                     @error('apellidos')
                         <p class="mt-1 text-sm text-red-500 font-medium" data-flux-component="error">{{ $message }}</p>
                     @enderror
                 </div>
+                <!-- Campos ocultos para tipo_documento_api y digito_verificador -->
+                <input type="hidden" id="tipo_documento_api" name="tipo_documento_api">
+                <input type="hidden" id="digito_verificador" name="digito_verificador">
             </div>
             <div class="relative my-8">
                 <div class="absolute inset-0 flex items-center">
@@ -126,6 +129,7 @@
         </form>
     </div>
 </div>
+
 <script>
     $(document).ready(function () {
         $('#consultar-dni').on('click', function () {
@@ -148,7 +152,7 @@
             }
 
             $.ajax({
-                url: '{{ route('admin.customer.consultar-dni') }}',
+                url: '{{ route('admin.cliente.consultar-dni') }}',
                 method: 'GET',
                 data: {
                     dni: dni,

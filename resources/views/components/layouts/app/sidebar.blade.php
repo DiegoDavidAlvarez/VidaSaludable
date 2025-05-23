@@ -12,18 +12,21 @@
             </a>
 
             <flux:navlist variant="outline">
-                <flux:navlist.group :heading="__('Platform')" class="grid">
+                <flux:navlist.group :heading="__('Inventario')" class="grid">
                     <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
                     <flux:navlist.item icon="tag" :href="route('admin.categoria.index')" :current="request()->routeIs('admin.categoria.index')" wire:navigate>{{ __('Categoría') }}</flux:navlist.item>
-                    <flux:navlist.item icon="user" :href="route('admin.supplier.index')" :current="request()->routeIs('admin.supplier.index')" wire:navigate>{{ __('Proveedor') }}</flux:navlist.item>
+                    <flux:navlist.item icon="building-storefront" :href="route('admin.supplier.index')" :current="request()->routeIs('admin.supplier.index')" wire:navigate>{{ __('Proveedor') }}</flux:navlist.item>
                     <flux:navlist.item icon="cube" :href="route('admin.product.index')" :current="request()->routeIs('admin.product.index')" wire:navigate>{{ __('Producto') }}</flux:navlist.item>
-                    {{-- <flux:navlist.item icon="banknotes" :href="route('admin.purchase.index')" :current="request()->routeIs('admin.purchase.index')" wire:navigate>{{ __('Compra') }}</flux:navlist.item> --}}
                 </flux:navlist.group>
                 <flux:navlist.group expandable heading="Compra" class="hidden lg:grid">
-                    <flux:navlist.item icon="shopping-cart" :href="route('admin.purchase.index')" :current="request()->routeIs('admin.compra.index')" wire:navigate>{{ __('Compra') }}</flux:navlist.item>
-                    <flux:navlist.item icon="clipboard-document-list" :href="route('admin.purchase_detail.index')" :current="request()->routeIs('admin.compra_detalle.index')" wire:navigate>{{ __('Detalle de compra') }}</flux:navlist.item>
+                    <flux:navlist.item icon="shopping-cart" :href="route('admin.purchase.index')" :current="request()->routeIs('admin.purchase.index')" wire:navigate>{{ __('Compra') }}</flux:navlist.item>
+                    <flux:navlist.item icon="clipboard-document-list" :href="route('admin.purchase_detail.index')" :current="request()->routeIs('admin.purchase_detail.index')" wire:navigate>{{ __('Detalle de compra') }}</flux:navlist.item>
                 </flux:navlist.group>
-                <flux:navlist.item icon="users" :href="route('admin.customer.index')" :current="request()->routeIs('admin.customer.index')" wire:navigate>{{ __('Cliente') }}</flux:navlist.item>
+                <flux:navlist.item icon="user-group" :href="route('admin.cliente.index')" :current="request()->routeIs('admin.cliente.index')" wire:navigate>{{ __('Cliente') }}</flux:navlist.item>
+                {{-- <flux:navlist.group expandable heading="Venta" class="hidden lg:grid">
+                    <flux:navlist.item icon="currency-dollar" :href="route('admin.venta.index')" :current="request()->routeIs('admin.venta.index')" wire:navigate>{{ __('Venta') }}</flux:navlist.item>
+                    <flux:navlist.item icon="table-cells" :href="route('admin.venta_detalle.index')" :current="request()->routeIs('admin.venta_detalle.index')" wire:navigate>{{ __('Tabla de ventas') }}</flux:navlist.item>
+                </flux:navlist.group> --}}
             </flux:navlist>
             <flux:spacer />
 
