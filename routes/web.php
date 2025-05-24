@@ -43,7 +43,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     // Ruta para consultar DNI
     Route::get('cliente/consultar-dni', [ClienteController::class, 'consultarDni'])->name('admin.cliente.consultar-dni');
     // Ruta para consultar RUC
-    Route::get('/supplier/consultar-ruc', [SupplierController::class, 'consultarRuc'])->name('admin.supplier.consultar-ruc');
+    Route::get('supplier/consultar-ruc', [SupplierController::class, 'consultarRuc'])->name('admin.supplier.consultar-ruc');
     // // Ruta para consultar producto por codigo
     // Route::post('/admin/venta/get-product', [VentaController::class, 'getProduct'])->name('admin.venta.get-product');
     // // Ruta para consultar cliente por dni

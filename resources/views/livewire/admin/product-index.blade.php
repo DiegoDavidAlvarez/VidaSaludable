@@ -83,7 +83,7 @@
                     <label for="name" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
                         Nombre <span class="text-red-500">*</span>
                     </label>
-                    <input type="text" id="name" name="name" maxlength="255"
+                    <input type="text" id="name" name="name" maxlength="255" value="{{ old('name') }}"
                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
                         placeholder="Ej: Paracetamol 500mg" required maxlength="255" data-flux-control>
                     @error('name')
@@ -95,8 +95,9 @@
                     <label for="bar_code" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
                         Código de Barra <span class="text-red-500">*</span>
                     </label>
-                    <input type="text" id="bar_code" name="bar_code"
-                        pattern="[0-9]{1,50}" maxlength="50" inputmode="numeric"
+                    <input type="text" id="bar_code" name="bar_code" value="{{ old('bar_code') }}"
+                        pattern="\d{1,50}" maxlength="50"
+                        oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
                         placeholder="Ej: 012345678912" required data-flux-control>
                     @error('bar_code')
@@ -108,8 +109,13 @@
                     <label for="sale_price" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
                         Precio de Venta <span class="text-red-500">*</span>
                     </label>
-                    <input type="text" id="sale_price" name="sale_price"
-                        inputmode="numeric"
+                    <input type="text" id="sale_price" name="sale_price" value="{{ old('sale_price') }}"
+                        pattern="^\d{1,8}(\.\d{0,2})?$"
+                        maxlength="11"
+                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').replace(/^0+/, '0');
+                                    if (this.value.startsWith('.')) this.value = '0.';
+                                    if (this.value.split('.').length > 2) this.value = this.value.slice(0, -1);
+                                    if (this.value.split('.')[0].length > 8) this.value = this.value.slice(0, this.value.indexOf('.') > -1 ? this.value.indexOf('.') : 8);"
                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
                         placeholder="Ej: 12.50" required data-flux-control>
                     @error('sale_price')
@@ -121,8 +127,13 @@
                     <label for="purchase_price" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
                         Precio de Compra <span class="text-red-500">*</span>
                     </label>
-                    <input type="text" id="purchase_price" name="purchase_price"
-                        inputmode="numeric"
+                    <input type="text" id="purchase_price" name="purchase_price" value="{{ old('purchase_price') }}"
+                        pattern="^\d{1,8}(\.\d{0,2})?$"
+                        maxlength="11"
+                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').replace(/^0+/, '0');
+                                    if (this.value.startsWith('.')) this.value = '0.';
+                                    if (this.value.split('.').length > 2) this.value = this.value.slice(0, -1);
+                                    if (this.value.split('.')[0].length > 8) this.value = this.value.slice(0, this.value.indexOf('.') > -1 ? this.value.indexOf('.') : 8);"
                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
                         placeholder="Ej: 10.00" required data-flux-control>
                     @error('purchase_price')
@@ -134,8 +145,9 @@
                     <label for="stock" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
                         Stock <span class="text-red-500">*</span>
                     </label>
-                    <input type="text" id="stock" name="stock"
-                        pattern="[0-9]{1,10}" maxlength="10" inputmode="numeric"
+                    <input type="text" id="stock" name="stock" value="{{ old('stock') }}"
+                        pattern="\d{1,10}" maxlength="10"
+                        oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
                         placeholder="Ej: 100" required data-flux-control>
                     @error('stock')
@@ -147,8 +159,9 @@
                     <label for="min_stock" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
                         Stock Mínimo <span class="text-red-500">*</span>
                     </label>
-                    <input type="text" id="min_stock" name="min_stock"
-                        pattern="[0-9]{1,10}" maxlength="10" inputmode="numeric"
+                    <input type="text" id="min_stock" name="min_stock" value="{{ old('min_stock') }}"
+                        pattern="\d{1,10}" maxlength="10"
+                        oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
                         placeholder="Ej: 10" required data-flux-control>
                     @error('min_stock')
@@ -161,7 +174,7 @@
                 <label for="description" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
                     Descripción
                 </label>
-                <textarea id="description" name="description" rows="4" maxlength="255"
+                <textarea id="description" name="description" rows="4" maxlength="255" value="{{ old('description') }}"
                     class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
                     placeholder="Ej: Tabletas para el dolor de cabeza" data-flux-control></textarea>
                 @error('description')
@@ -188,42 +201,3 @@
         </form>
     </div>
 </div>
-<script>
-    document.getElementById('bar_code').addEventListener('input', function (e) {
-        e.target.value = e.target.value.replace(/[^0-9]/g, '');
-    });
-
-    document.getElementById('stock').addEventListener('input', function (e) {
-        e.target.value = e.target.value.replace(/[^0-9]/g, '');
-    });
-
-    document.getElementById('min_stock').addEventListener('input', function (e) {
-        e.target.value = e.target.value.replace(/[^0-9]/g, '');
-    });
-    
-    const totalInputSale = document.getElementById('sale_price');
-    let lastValidValueSale = totalInputSale.value;
-
-    totalInputSale.addEventListener('input', function() {
-        const currentValueSale = this.value;
-        const patternSale = /^\d{0,8}(\.\d{0,2})?$/;
-        if (patternSale.test(currentValueSale)) {
-            lastValidValueSale = currentValueSale;
-        } else {
-            this.value = lastValidValueSale;
-        }
-    });
-
-    const totalInputPurchase = document.getElementById('purchase_price');
-    let lastValidValuePurchase = totalInputPurchase.value;
-
-    totalInputPurchase.addEventListener('input', function() {
-        const currentValuePurchase = this.value;
-        const patternPurchase = /^\d{0,8}(\.\d{0,2})?$/;
-        if (patternPurchase.test(currentValuePurchase)) {
-            lastValidValuePurchase = currentValuePurchase;
-        } else {
-            this.value = lastValidValuePurchase;
-        }
-    });
-</script>

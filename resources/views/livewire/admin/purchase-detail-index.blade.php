@@ -82,9 +82,11 @@
                     <label for="quantity" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
                         Cantidad <span class="text-red-500">*</span>
                     </label>
-                    <input type="number" id="quantity" name="quantity"
+                    <input type="text" id="quantity" name="quantity"
+                        pattern="\d{1,10}" maxlength="10"
+                        oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
-                        placeholder="Ej: 5" required min="1" value="{{ old('quantity') }}"
+                        placeholder="Ej: 5" required value="{{ old('quantity') }}"
                         data-flux-control>
                     @error('quantity')
                         <p class="mt-1 text-sm text-red-500 font-medium" data-flux-component="error">{{ $message }}</p>
@@ -95,9 +97,15 @@
                     <label for="unitary_cost" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
                         Precio Unitario <span class="text-red-500">*</span>
                     </label>
-                    <input type="number" id="unitary_cost" name="unitary_cost"
+                    <input type="text" id="unitary_cost" name="unitary_cost"
+                        pattern="^\d{1,8}(\.\d{0,2})?$"
+                        maxlength="11"
+                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').replace(/^0+/, '0');
+                                    if (this.value.startsWith('.')) this.value = '0.';
+                                    if (this.value.split('.').length > 2) this.value = this.value.slice(0, -1);
+                                    if (this.value.split('.')[0].length > 8) this.value = this.value.slice(0, this.value.indexOf('.') > -1 ? this.value.indexOf('.') : 8);"
                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
-                        placeholder="Ej: 50.00" required step="0.01" min="0" value="{{ old('unitary_cost') }}"
+                        placeholder="Ej: 50.00" required value="{{ old('unitary_cost') }}"
                         data-flux-control>
                     @error('unitary_cost')
                         <p class="mt-1 text-sm text-red-500 font-medium" data-flux-component="error">{{ $message }}</p>

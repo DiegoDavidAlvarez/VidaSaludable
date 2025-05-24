@@ -17,6 +17,11 @@ class SupplierController extends Controller
         return view('admin.supplier.index');
     }
 
+    public function create()
+    {
+        return view('admin.supplier.create');
+    }
+
     public function consultarRuc(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -50,8 +55,8 @@ class SupplierController extends Controller
                 // Normalizar la respuesta
                 $normalizedData = [
                     'ruc' => $data['numeroDocumento'] ?? $ruc,
-                    'company_name' => $data['razonSocial'] ?? '',
-                    'address' => $data['direccion'] ?? '',
+                    'razon_social' => $data['razonSocial'] ?? '',
+                    'direccion' => $data['direccion'] ?? '',
                     'estado' => $data['estado'] ?? '',
                     'condicion' => $data['condicion'] ?? '',
                 ];

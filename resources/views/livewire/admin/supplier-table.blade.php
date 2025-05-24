@@ -146,9 +146,8 @@
                                         RUC de la empresa <span class="text-red-500">*</span>
                                     </label>
                                     <input type="text" id="ruc" name="ruc"
-                                        x-model="currentRuc" pattern="[0-9]{11}" maxlength="11" inputmode="numeric"
-                                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
-                                        placeholder="Ej: 12345678910" required data-flux-control>
+                                        x-model="currentRuc" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
+                                        placeholder="Ej: 12345678910" required pattern="\d{11}" maxlength="11" oninput="this.value = this.value.replace(/[^0-9]/g, '')" data-flux-control>
                                     @error('ruc')
                                         <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
                                     @enderror
@@ -192,7 +191,9 @@
                                             +51
                                         </span>
                                         <input type="tel" id="phone_number" name="phone_number"
-                                            x-model="currentPhoneNumber" pattern="[0-9]{9}" maxlength="9" inputmode="numeric"
+                                            pattern="\d{9}" maxlength="9"
+                                            oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                            x-model="currentPhoneNumber"
                                             class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-r-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
                                             placeholder="Ej: 987654321" required data-flux-control>
                                     </div>

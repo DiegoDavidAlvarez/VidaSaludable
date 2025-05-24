@@ -166,6 +166,12 @@
                         Total <span class="text-red-500">*</span>
                     </label>
                     <input type="number" step="0.01" id="total" name="total" x-model="currentTotal"
+                        pattern="^\d{1,8}(\.\d{0,2})?$"
+                        maxlength="11"
+                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').replace(/^0+/, '0');
+                                if (this.value.startsWith('.')) this.value = '0.';
+                                if (this.value.split('.').length > 2) this.value = this.value.slice(0, -1);
+                                if (this.value.split('.')[0].length > 8) this.value = this.value.slice(0, this.value.indexOf('.') > -1 ? this.value.indexOf('.') : 8);"
                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
                         placeholder="Ej: 50.50" required data-flux-control>
                     @error('total')

@@ -201,7 +201,8 @@
                                         Código de Barra <span class="text-red-500">*</span>
                                     </label>
                                     <input type="text" id="bar_code" name="bar_code" x-model="currentBarCode"
-                                        pattern="[0-9]{1,50}" maxlength="50" inputmode="numeric"
+                                        pattern="\d{1,50}" maxlength="50"
+                                        oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
                                         placeholder="Ej: 012345678912" required data-flux-control>
                                     @error('bar_code')
@@ -214,7 +215,12 @@
                                         Precio de Venta <span class="text-red-500">*</span>
                                     </label>
                                     <input type="text" id="sale_price" name="sale_price" x-model="currentSalePrice"
-                                        inputmode="numeric"
+                                        pattern="^\d{1,8}(\.\d{0,2})?$"
+                                        maxlength="11"
+                                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').replace(/^0+/, '0');
+                                                if (this.value.startsWith('.')) this.value = '0.';
+                                                if (this.value.split('.').length > 2) this.value = this.value.slice(0, -1);
+                                                if (this.value.split('.')[0].length > 8) this.value = this.value.slice(0, this.value.indexOf('.') > -1 ? this.value.indexOf('.') : 8);"
                                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
                                         placeholder="Ej: 12.50" required data-flux-control>
                                     @error('sale_price')
@@ -227,7 +233,12 @@
                                         Precio de Compra <span class="text-red-500">*</span>
                                     </label>
                                     <input type="text" id="purchase_price" name="purchase_price" x-model="currentPurchasePrice"
-                                        inputmode="numeric"
+                                        pattern="^\d{1,8}(\.\d{0,2})?$"
+                                        maxlength="11"
+                                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').replace(/^0+/, '0');
+                                                if (this.value.startsWith('.')) this.value = '0.';
+                                                if (this.value.split('.').length > 2) this.value = this.value.slice(0, -1);
+                                                if (this.value.split('.')[0].length > 8) this.value = this.value.slice(0, this.value.indexOf('.') > -1 ? this.value.indexOf('.') : 8);"
                                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
                                         placeholder="Ej: 10.00" required data-flux-control>
                                     @error('purchase_price')
@@ -240,7 +251,8 @@
                                         Stock <span class="text-red-500">*</span>
                                     </label>
                                     <input type="text" id="stock" name="stock" x-model="currentStock"
-                                        pattern="[0-9]{1,10}" maxlength="10" inputmode="numeric"
+                                        pattern="\d{1,10}" maxlength="10"
+                                        oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
                                         placeholder="Ej: 100" required data-flux-control>
                                     @error('stock')
@@ -253,7 +265,8 @@
                                         Stock Mínimo <span class="text-red-500">*</span>
                                     </label>
                                     <input type="text" id="min_stock" name="min_stock" x-model="currentMinStock"
-                                        pattern="[0-9]{1,10}" maxlength="10" inputmode="numeric"
+                                        pattern="\d{1,10}" maxlength="10"
+                                        oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
                                         placeholder="Ej: 10" required data-flux-control>
                                     @error('min_stock')

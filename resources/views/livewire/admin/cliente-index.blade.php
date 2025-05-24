@@ -66,7 +66,7 @@
                         Número de Documento <span class="text-red-500">*</span>
                     </label>
                     <div class="flex gap-2">
-                        <input type="text" id="numero_documento" name="numero_documento"
+                        <input type="text" id="numero_documento" name="numero_documento" value="{{ old('numero_documento') }}"
                             class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
                             placeholder="Ej: 12345678" required pattern="\d{8}" maxlength="8"
                             oninput="this.value = this.value.replace(/[^0-9]/g, '')" data-flux-control>
@@ -86,7 +86,7 @@
                     <label for="nombres" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
                         Nombres <span class="text-red-500">*</span>
                     </label>
-                    <input type="text" id="nombres" name="nombres"
+                    <input type="text" id="nombres" name="nombres" value="{{ old('nombres') }}"
                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
                         placeholder="Ej: Juan Carlos" required maxlength="100" data-flux-control>
                     @error('nombres')
@@ -98,7 +98,7 @@
                     <label for="apellidos" class="block text-sm font-medium text-zinc-300 mb-1" data-flux-label>
                         Apellidos <span class="text-red-500">*</span>
                     </label>
-                    <input type="text" id="apellidos" name="apellidos"
+                    <input type="text" id="apellidos" name="apellidos" value="{{ old('apellidos') }}"
                         class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
                         placeholder="Ej: Pérez Gómez" required maxlength="100" data-flux-control>
                     @error('apellidos')
