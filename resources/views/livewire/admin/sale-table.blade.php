@@ -90,12 +90,12 @@
                             <td class="p-4">
                                 <span
                                     class="inline-flex px-3 py-1 rounded-full text-sm font-medium
-                                    {{ $sale->tipo_comprobante === 'Factura'
+                                    {{ $sale->receipt_type === 'Factura'
                                         ? 'bg-green-900/30 text-green-400'
-                                        : ($sale->tipo_comprobante === 'Boleta'
+                                        : ($sale->receipt_type === 'Boleta'
                                             ? 'bg-blue-900/30 text-blue-400'
                                             : 'bg-purple-900/30 text-purple-400') }}">
-                                    {{ $sale->tipo_comprobante }}
+                                    {{ $sale->receipt_type }}
                                 </span>
                             </td>
                             <td class="p-4 text-zinc-300">{{ \Carbon\Carbon::parse($sale->fecha)->format('d/m/Y') }}
