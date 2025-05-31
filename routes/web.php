@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\SaleController;
 use App\Http\Controllers\Admin\SaleDetailController;
 use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\NotificationController;
+use App\Models\PurchaseDetail;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
