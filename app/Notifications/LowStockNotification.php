@@ -24,7 +24,8 @@ class LowStockNotification extends Notification
         return (new MailMessage)
             ->subject('Alerta de Stock Bajo 🚨')
             ->line("El producto {$this->product->name} ha alcanzado un stock bajo de {$this->product->stock} (mínimo: {$this->product->min_stock}).")
-            ->action('Ver Producto', url('/admin/product/' . $this->product->id))
+            // ->action('Ver Producto', url('/admin/product/' . $this->product->id))
+            ->action('Ver Producto', url('/admin/product/'))
             ->line('Por favor, considera reabastecer el inventario. 📦');
     }
 
