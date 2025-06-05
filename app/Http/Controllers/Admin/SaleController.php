@@ -57,33 +57,114 @@ class SaleController extends Controller
 
     public function store(Request $request)
     {
-        // ... (código previo para validación y creación de venta)
+        $validator = Validator::make($request->all(), [
+            'customer_id' => 'required|exists:customers,id',
+            'receipt_type' => 'required|string|max:255',
+            'products' => 'required|array|min:1',
+            'products.*.bar_code' => 'required|string|exists:products,bar_code',
+            'products.*.quantity' => 'required|integer|min:1',
+            'total' => 'required|numeric|min:0',
+        ]);
 
-        $productsToUpdate = [];
-        foreach ($request->items as $item) {
-            $product = Product::findOrFail($item['product_id']);
-            $saleDetailsData[] = [
-                // ... (datos de detalles de venta)
-            ];
-            $productsToUpdate[$product->id] = [
-                'quantity' => $item['quantity'],
-                'product' => $product,
-            ];
-        }
+        try {
+            $validator->validate();
 
-        SaleDetail::insert($saleDetailsData);
+            // Iniciar una transacción
+            DB::beginTransaction();
 
-        foreach ($productsToUpdate as $productId => $data) {
-            $product = $data['product'];
-            $quantity = $data['quantity'];
-            Product::where('id', $productId)->decrement('stock', $quantity);
-            $product->refresh();
-            if ($product->stock <= $product->min_stock) {
-                Auth::user()->notify(new LowStockNotification($product));
+            // Obtener usuario logueado
+            $userId = Auth::id();
+
+            // Calcular subtotal e IGV
+            $total = $request->total;
+            $subtotal = $total / 1.18;
+            $igv = $total - $subtotal;
+
+            // Obtener fecha actual
+            $fecha = Carbon::now()->toDateString();
+
+            // Crear la venta (tabla sales)
+            $sale = Sale::create([
+                'user_id' => $userId,
+                'customer_id' => $request->customer_id,
+                'date' => $fecha,
+                'total' => $total,
+                'receipt_type' => $request->receipt_type,
+                'igv' => round($igv, 2),
+                'subtotal' => round($subtotal, 2),
+            ]);
+
+            // Preparar datos para inserción en lote en sale_details
+            $saleDetailsData = [];
+            $productsToUpdate = [];
+
+            foreach ($request->products as $item) {
+                $product = Product::where('bar_code', $item['bar_code'])
+                    ->where('status', true)
+                    ->first();
+
+                if (!$product) {
+                    throw ValidationException::withMessages([
+                        'products' => "Producto con código {$item['bar_code']} no encontrado o no está activo.",
+                    ]);
+                }
+
+                if ($product->stock < $item['quantity']) {
+                    throw ValidationException::withMessages([
+                        'products' => "Stock insuficiente para el producto {$product->name}.",
+                    ]);
+                }
+
+                // Preparar datos para sale_details
+                $saleDetailsData[] = [
+                    'sale_id' => $sale->id,
+                    'product_id' => $product->id,
+                    'quantity' => $item['quantity'],
+                    'unitary_price' => $product->sale_price,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+
+                // Preparar actualización de stock
+                $productsToUpdate[$product->id] = [
+                    'quantity' => $item['quantity'],
+                    'product' => $product,
+                ];
             }
+
+            // Insertar todos los detalles de la venta en lote
+            SaleDetail::insert($saleDetailsData);
+
+            // Actualizar el stock de los productos y verificar stock mínimo
+            foreach ($productsToUpdate as $productId => $data) {
+                $product = $data['product'];
+                $quantity = $data['quantity'];
+
+                // Decrementar stock
+                Product::where('id', $productId)
+                    ->decrement('stock', $quantity);
+
+                // Refrescar el modelo para obtener el stock actualizado
+                $product->refresh();
+
+                // Verificar si el stock está en o por debajo del mínimo
+                if ($product->stock <= $product->min_stock) {
+                    // Enviar notificación al usuario logueado
+                    Auth::user()->notify(new LowStockNotification($product));
+                }
+            }
+
+            // Confirmar la transacción
+            DB::commit();
+
+            return redirect()->route('admin.sale.index')
+                ->with('success', 'La venta fue registrada correctamente.');
+        } catch (ValidationException $e) {
+            DB::rollBack();
+            return back()->withErrors($e->validator->errors())->withInput();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->withErrors(['error' => 'Error al registrar la venta: ' . $e->getMessage()])->withInput();
         }
-
-        // ... (confirmar transacción y respuesta)
     }
-
 }
