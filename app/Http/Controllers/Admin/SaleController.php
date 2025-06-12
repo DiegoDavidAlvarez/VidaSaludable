@@ -73,6 +73,7 @@ class SaleController extends Controller
             DB::beginTransaction();
 
             // Obtener usuario logueado
+            /**@disregard*/
             $userId = Auth::id();
 
             // Calcular subtotal e IGV
@@ -150,6 +151,7 @@ class SaleController extends Controller
                 // Verificar si el stock está en o por debajo del mínimo
                 if ($product->stock <= $product->min_stock) {
                     // Enviar notificación al usuario logueado
+                    /**@disregard*/
                     Auth::user()->notify(new LowStockNotification($product));
                 }
             }

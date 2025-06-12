@@ -59,7 +59,7 @@ class ProductController extends Controller
             'supplier_id' => 'required|exists:suppliers,id',
             'name' => 'required|string|max:255',
             'description' => 'nullable|string|max:255',
-            'bar_code' => 'required|string|unique:products,bar_code|max:255',
+            'bar_code' => 'required|string|max:255',
             'sale_price' => 'required|numeric|min:0|max:99999999.99',
             'purchase_price' => 'required|numeric|min:0|max:99999999.99',
             'stock' => 'required|integer|min:0|max:99999999999',
