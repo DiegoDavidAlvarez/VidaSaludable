@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Supplier;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -151,5 +152,13 @@ class SupplierController extends Controller
         return redirect()->route('admin.supplier.index')
             ->with('success', 'El proveedor fue eliminado correctamente.');
     }
+
+    public function exportPdf()
+    {
+        $suppliers = Supplier::where('status', true)->get();
+        $pdf = Pdf::loadView('Admin.supplier.pdf', compact('suppliers'));
+        return $pdf->download('reporte_proveedores.pdf');
+    }
+
 }
 

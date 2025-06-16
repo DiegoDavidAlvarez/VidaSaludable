@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -71,5 +72,13 @@ class CategoriaController extends Controller
         return redirect()->route('admin.categoria.index')
             ->with('success', 'La categoría fue eliminado correctamente.');
     }
+
+    public function exportPdf()
+    {
+        $categories = Category::where('status', true)->get();
+        $pdf = Pdf::loadView('Admin.categoria.pdf', compact('categories'));
+        return $pdf->download('reporte_categorias.pdf');
+    }
+
 }
 

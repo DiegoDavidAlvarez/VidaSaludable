@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\SaleDetailController;
 use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\NotificationController;
 use App\Models\PurchaseDetail;
+use App\Models\Supplier;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
@@ -31,7 +32,9 @@ Route::middleware(['auth'])->group(function () {
 
 Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::resource('categoria', CategoriaController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.categoria');
+    Route::get('categoria/export-pdf', [CategoriaController::class, 'exportPdf'])->name('admin.categoria.export-pdf');
     Route::resource('supplier', SupplierController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.supplier');
+    Route::get('supplier/export-pdf', [SupplierController::class, 'exportPdf'])->name('admin.supplier.export-pdf');
     Route::resource('product', ProductController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.product');
     Route::resource('purchase', PurchaseController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.purchase');
     Route::resource('purchase_detail', PurchaseDetailController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.purchase_detail');
