@@ -40,7 +40,7 @@
             <h1 class="text-2xl font-bold text-white" data-flux-component="heading">
                 Lista de Categorías
             </h1>
-            <a href="{{ route('admin.supplier.export-pdf') }}"
+            <a href="{{ route('admin.categoria.export-pdf') }}"
                 class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
                 Exportar PDF
             </a>

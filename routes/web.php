@@ -36,7 +36,9 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::resource('supplier', SupplierController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.supplier');
     Route::get('supplier/export-pdf', [SupplierController::class, 'exportPdf'])->name('admin.supplier.export-pdf');
     Route::resource('product', ProductController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.product');
+    Route::get('product/export-pdf', [ProductController::class, 'exportPdf'])->name('admin.product.export-pdf');
     Route::resource('purchase', PurchaseController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.purchase');
+    Route::get('purchase/export-pdf', [PurchaseController::class, 'exportPdf'])->name('admin.purchase.export-pdf');
     Route::resource('purchase_detail', PurchaseDetailController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.purchase_detail');
     Route::resource('cliente', ClienteController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.cliente');
     Route::resource('sale', SaleController::class)->only(['index', 'store'])->names('admin.sale');

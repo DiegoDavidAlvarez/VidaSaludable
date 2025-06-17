@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Reporte de Proveedores</title>
+    <title>Reporte de Compras</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -20,12 +20,8 @@
             top: 50%;
             transform: translateY(-50%);
         }
-        .logo-left {
-            left: 0;
-        }
-        .logo-right {
-            right: 0;
-        }
+        .logo-left { left: 0; }
+        .logo-right { right: 0; }
         .logo-left img, .logo-right img {
             max-height: 60px;
             width: auto;
@@ -76,37 +72,37 @@
             <img src="{{ public_path('image/logo_VidaSaludable.png') }}" alt="Logo Vida Saludable">
         </div>
         <div class="logo-right">
-            <img src="{{ public_path('image/logo_laSalle.png') }}" alt="Logo Después">
+            <img src="{{ public_path('image/logo_laSalle.png') }}" alt="Logo La Salle">
         </div>
         <div class="header-title">Gestión de proyectos TI</div>
     </div>
-    <h1>Reporte de Proveedores Activos</h1>
+
+    <h1>Reporte de Compras</h1>
     <table>
         <thead>
             <tr>
                 <th>#</th>
-                <th>RUC</th>
-                <th>Razón Social</th>
-                <th>Dirección</th>
-                <th>Teléfono</th>
-                <th>Email</th>
-                <th>Estado</th>
+                <th>Proveedor</th>
+                <th>Fecha</th>
+                <th>Tipo de comprobante</th>
+                <th>Total</th>
+                <th>Registrado por</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($suppliers as $index => $supplier)
-                <tr>
-                    <td>{{ $index + 1 }}</td>
-                    <td>{{ $supplier->ruc }}</td>
-                    <td>{{ $supplier->company_name }}</td>
-                    <td>{{ $supplier->address }}</td>
-                    <td>{{ $supplier->phone_number }}</td>
-                    <td>{{ $supplier->email }}</td>
-                    <td>Activo</td>
-                </tr>
+            @foreach($purchases as $index => $purchase)
+            <tr>
+                <td>{{ $index + 1 }}</td>
+                <td>{{ $purchase->supplier->company_name }}</td>
+                <td>{{ \Carbon\Carbon::parse($purchase->date)->format('d/m/Y') }}</td>
+                <td>{{ $purchase->receipt_type }}</td>
+                <td>{{ number_format($purchase->total, 2) }}</td>
+                <td>{{ $purchase->user->name }}</td>
+            </tr>
             @endforeach
         </tbody>
     </table>
+
     <div class="footer">
         Generado el {{ now()->format('d/m/Y H:i') }} | Sistema de Gestión Vida Saludable
     </div>

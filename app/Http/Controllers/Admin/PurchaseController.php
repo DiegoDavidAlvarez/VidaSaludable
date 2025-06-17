@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Purchase;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -76,4 +77,12 @@ class PurchaseController extends Controller
         return redirect()->route('admin.purchase.index')
             ->with('success', 'La compra fue eliminada correctamente.');
     }
+
+    public function exportPdf()
+    {
+        $purchases = Purchase::all();
+        $pdf = Pdf::loadView('admin.purchase.pdf', compact('purchases'));
+        return $pdf->download('reporte_compras.pdf');
+    }
+
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -98,4 +99,12 @@ class ProductController extends Controller
         return redirect()->route('admin.product.index')
             ->with('success', 'El producto fue eliminado correctamente.');
     }
+    
+    public function exportPdf()
+    {
+        $products = Product::where('status', true)->get();
+        $pdf = Pdf::loadView('Admin.product.pdf', compact('products'));
+        return $pdf->download('reporte_productos.pdf');
+    }
+
 }
