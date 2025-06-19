@@ -43,6 +43,10 @@
             <h1 class="text-2xl font-bold text-white" data-flux-component="heading">
                 Lista de Detalles de Compra
             </h1>
+            <a href="{{ route('admin.purchase_detail.export-pdf') }}"
+                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                Exportar PDF
+            </a>
         </div>
 
         <div class="overflow-x-auto">

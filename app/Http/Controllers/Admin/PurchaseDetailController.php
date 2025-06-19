@@ -112,4 +112,16 @@ class PurchaseDetailController extends Controller
         PurchaseDetail::find($id)->delete();
         return redirect()->route('admin.purchase_detail.index')->with('success', 'El detalle de la compra fue eliminado correctamente.');
     }
+
+    public function exportPdf()
+    {
+        $purchaseDetails = PurchaseDetail::with([
+            'purchase.supplier',
+            'product',
+            'purchase.user'
+        ])->get();
+
+        $pdf = Pdf::loadView('admin.purchase_detail.pdf', compact('purchaseDetails'));
+        return $pdf->download('reporte_detalle_compras.pdf');
+    }
 }

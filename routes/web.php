@@ -40,8 +40,11 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::resource('purchase', PurchaseController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.purchase');
     Route::get('purchase/export-pdf', [PurchaseController::class, 'exportPdf'])->name('admin.purchase.export-pdf');
     Route::resource('purchase_detail', PurchaseDetailController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.purchase_detail');
+    Route::get('purchase_detail/export-pdf', [PurchaseDetailController::class, 'exportPdf'])->name('admin.purchase_detail.export-pdf');
     Route::resource('cliente', ClienteController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.cliente');
+    Route::get('cliente/export-pdf', [ClienteController::class, 'exportPdf'])->name('admin.cliente.export-pdf');
     Route::resource('sale', SaleController::class)->only(['index', 'store'])->names('admin.sale');
+    Route::get('sale/export-pdf', [SaleController::class, 'exportPdf'])->name('admin.sale.export-pdf');
     Route::resource('sale_detail', SaleDetailController::class)->only(['index'])->names('admin.sale_detail');
     // Ruta para consultar DNI
     Route::get('cliente/consultar-dni', [ClienteController::class, 'consultarDni'])->name('admin.cliente.consultar-dni');

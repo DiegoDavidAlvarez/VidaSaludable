@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -168,5 +169,12 @@ class ClienteController extends Controller
     {
         Customer::findOrFail($id)->delete();
         return redirect()->route('admin.cliente.index')->with('success', 'El cliente fue eliminado correctamente.');
+    }
+
+    public function exportPdf()
+    {
+        $customers = Customer::all();
+        $pdf = Pdf::loadView('admin.cliente.pdf', compact('customers'));
+        return $pdf->download('reporte_clientes.pdf');
     }
 }

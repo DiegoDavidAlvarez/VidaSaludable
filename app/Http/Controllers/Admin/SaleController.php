@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Auth;
 use App\Notifications\LowStockNotification;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class SaleController extends Controller
 {
@@ -168,5 +169,13 @@ class SaleController extends Controller
             DB::rollBack();
             return back()->withErrors(['error' => 'Error al registrar la venta: ' . $e->getMessage()])->withInput();
         }
+    }
+
+    public function exportPdf()
+    {
+        $sales = Sale::with(['customer', 'saleDetails.product'])->get();
+        
+        $pdf = Pdf::loadView('admin.sale.pdf', compact('sales'));
+        return $pdf->download('reporte_ventas.pdf');
     }
 }
