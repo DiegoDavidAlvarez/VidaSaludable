@@ -46,6 +46,8 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::resource('sale', SaleController::class)->only(['index', 'store'])->names('admin.sale');
     Route::get('sale/export-pdf', [SaleController::class, 'exportPdf'])->name('admin.sale.export-pdf');
     Route::resource('sale_detail', SaleDetailController::class)->only(['index'])->names('admin.sale_detail');
+    Route::get('/sale_detail/{id}/print-receipt', [SaleController::class, 'printReceipt'])->name('admin.sale_detail.print-receipt');
+    // Agregar esta ruta a tu archivo routes/web.php dentro del grupo de rutas admin.sale
     // Ruta para consultar DNI
     Route::get('cliente/consultar-dni', [ClienteController::class, 'consultarDni'])->name('admin.cliente.consultar-dni');
     // Ruta para consultar RUC

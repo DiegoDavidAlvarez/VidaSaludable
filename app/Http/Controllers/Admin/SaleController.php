@@ -178,4 +178,16 @@ class SaleController extends Controller
         $pdf = Pdf::loadView('admin.sale.pdf', compact('sales'));
         return $pdf->download('reporte_ventas.pdf');
     }
+
+    public function printReceipt($id)
+    {
+        $sale = Sale::with(['customer', 'saleDetails.product'])->findOrFail($id);
+        
+        $pdf = Pdf::loadView('admin.sale_detail.pdf', compact('sale'));
+        
+        // Generar nombre del archivo
+        $fileName = 'comprobante_' . $sale->receipt_type . '_' . $sale->id . '.pdf';
+        
+        return $pdf->download($fileName);
+    }
 }

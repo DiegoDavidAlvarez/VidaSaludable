@@ -114,7 +114,7 @@
                                         data-sale-id="{{ $sale->id }}" title="Ver detalles">
                                         <i class="fas fa-chevron-down text-sm"></i>
                                     </button>
-                                    <a href="#"
+                                    <a href="{{ route('admin.sale_detail.print-receipt', $sale->id) }}"
                                         class="text-zinc-400 hover:text-white transition-colors p-2 rounded-full hover:bg-zinc-700/50"
                                         title="Imprimir comprobante">
                                         <i class="fas fa-print text-sm"></i>
