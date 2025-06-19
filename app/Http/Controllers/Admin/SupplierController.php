@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\SuppliersExport;
 use App\Http\Controllers\Controller;
 use App\Models\Supplier;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -10,6 +11,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SupplierController extends Controller
 {
@@ -159,6 +161,12 @@ class SupplierController extends Controller
         $pdf = Pdf::loadView('Admin.supplier.pdf', compact('suppliers'));
         return $pdf->download('reporte_proveedores.pdf');
     }
+
+    public function exportExcel()
+    {
+        return Excel::download(new SuppliersExport, 'reporte_proveedores.xlsx');
+    }
+
 
 }
 

@@ -40,11 +40,17 @@
             <h1 class="text-2xl font-bold text-white" data-flux-component="heading">
                 Lista de Proveedores
             </h1>
-
-            <a href="{{ route('admin.supplier.export-pdf') }}"
-                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                Exportar PDF
-            </a>
+            <div class="space-x-2">
+                <a href="{{ route('admin.supplier.export-pdf') }}"
+                    class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                    Exportar PDF
+                </a>
+    
+                <a href="{{ route('admin.supplier.export-excel') }}"
+                    class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+                    Exportar Excel
+                </a>
+            </div>
         </div>
 
         <div class="overflow-x-auto">
