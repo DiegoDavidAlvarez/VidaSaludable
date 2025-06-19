@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\PurchasesExport;
 use App\Http\Controllers\Controller;
 use App\Models\Purchase;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PurchaseController extends Controller
 {
@@ -85,4 +87,8 @@ class PurchaseController extends Controller
         return $pdf->download('reporte_compras.pdf');
     }
 
+    public function exportExcel()
+    {
+        return Excel::download(new PurchasesExport, 'reporte_compras.xlsx');
+    }
 }

@@ -34,19 +34,31 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::resource('categoria', CategoriaController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.categoria');
     Route::get('categoria/export-pdf', [CategoriaController::class, 'exportPdf'])->name('admin.categoria.export-pdf');
     Route::get('categoria/export-excel', [CategoriaController::class, 'exportExcel'])->name('admin.categoria.export-excel');
+
     Route::resource('supplier', SupplierController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.supplier');
     Route::get('supplier/export-pdf', [SupplierController::class, 'exportPdf'])->name('admin.supplier.export-pdf');
     Route::get('supplier/export-excel', [SupplierController::class, 'exportExcel'])->name('admin.supplier.export-excel');
+
     Route::resource('product', ProductController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.product');
     Route::get('product/export-pdf', [ProductController::class, 'exportPdf'])->name('admin.product.export-pdf');
+    Route::get('product/export-excel', [ProductController::class, 'exportExcel'])->name('admin.product.export-excel');
+
     Route::resource('purchase', PurchaseController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.purchase');
     Route::get('purchase/export-pdf', [PurchaseController::class, 'exportPdf'])->name('admin.purchase.export-pdf');
+    Route::get('purchase/export-excel', [PurchaseController::class, 'exportExcel'])->name('admin.purchase.export-excel');
+
     Route::resource('purchase_detail', PurchaseDetailController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.purchase_detail');
     Route::get('purchase_detail/export-pdf', [PurchaseDetailController::class, 'exportPdf'])->name('admin.purchase_detail.export-pdf');
+    Route::get('purchase_detail/export-excel', [PurchaseDetailController::class, 'exportExcel'])->name('admin.purchase_detail.export-excel');
+
     Route::resource('cliente', ClienteController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.cliente');
     Route::get('cliente/export-pdf', [ClienteController::class, 'exportPdf'])->name('admin.cliente.export-pdf');
+    Route::get('cliente/export-excel', [ClienteController::class, 'exportExcel'])->name('admin.cliente.export-excel');
+
     Route::resource('sale', SaleController::class)->only(['index', 'store'])->names('admin.sale');
     Route::get('sale/export-pdf', [SaleController::class, 'exportPdf'])->name('admin.sale.export-pdf');
+    Route::get('sale/export-excel', [SaleController::class, 'exportExcel'])->name('admin.sale.export-excel');
+
     Route::resource('sale_detail', SaleDetailController::class)->only(['index'])->names('admin.sale_detail');
     Route::get('/sale_detail/{id}/print-receipt', [SaleController::class, 'printReceipt'])->name('admin.sale_detail.print-receipt');
     // Agregar esta ruta a tu archivo routes/web.php dentro del grupo de rutas admin.sale

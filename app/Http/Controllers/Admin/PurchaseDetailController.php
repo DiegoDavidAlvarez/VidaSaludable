@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\PurchaseDetailsExport;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\PurchaseDetail;
@@ -10,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PurchaseDetailController extends Controller
 {
@@ -123,5 +125,10 @@ class PurchaseDetailController extends Controller
 
         $pdf = Pdf::loadView('admin.purchase_detail.pdf', compact('purchaseDetails'));
         return $pdf->download('reporte_detalle_compras.pdf');
+    }
+
+    public function exportExcel()
+    {
+        return Excel::download(new PurchaseDetailsExport, 'reporte_detalle_compras.xlsx');
     }
 }

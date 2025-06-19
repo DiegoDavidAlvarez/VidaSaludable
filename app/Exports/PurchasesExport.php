@@ -2,26 +2,29 @@
 
 namespace App\Exports;
 
-use App\Models\Category;
+use App\Models\Purchase;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class CategoriesExport implements FromCollection, WithHeadings, WithStyles, WithColumnWidths
+class PurchasesExport implements FromCollection, WithHeadings, WithStyles, WithColumnWidths
 {
     public function collection()
     {
-        return Category::where('status', true)
-            ->select('id', 'name', 'description', 'status')
+        return Purchase::with(['user', 'supplier'])
+            ->select('id', 'user_id', 'supplier_id', 'date', 'total', 'receipt_type', 'created_at')
             ->get()
             ->map(function ($item) {
                 return [
                     'id' => $item->id,
-                    'name' => $item->name,
-                    'description' => $item->description,
-                    'status' => $item->status ? 'Activo' : 'Inactivo'
+                    'user' => $item->user->name ?? 'N/A',
+                    'supplier' => $item->supplier->company_name ?? 'N/A',
+                    'date' => $item->date ? date('d/m/Y', strtotime($item->date)) : 'N/A',
+                    'total' => 'S/ ' . number_format($item->total, 2),
+                    'receipt_type' => $item->receipt_type,
+                    'created_at' => $item->created_at ? $item->created_at->format('d/m/Y H:i') : 'N/A'
                 ];
             });
     }
@@ -30,9 +33,12 @@ class CategoriesExport implements FromCollection, WithHeadings, WithStyles, With
     {
         return [
             '#',
-            'Nombre',
-            'Descripción',
-            'Estado'
+            'Usuario',
+            'Proveedor',
+            'Fecha Compra',
+            'Total',
+            'Tipo Comprobante',
+            'Fecha Registro'
         ];
     }
 
@@ -40,9 +46,12 @@ class CategoriesExport implements FromCollection, WithHeadings, WithStyles, With
     {
         return [
             'A' => 5,   // ID
-            'B' => 25,  // Nombre
-            'C' => 30,  // Descripción
-            'D' => 10,  // Estado
+            'B' => 20,  // Usuario
+            'C' => 25,  // Proveedor
+            'D' => 15,  // Fecha Compra
+            'E' => 15,  // Total
+            'F' => 20,  // Tipo Comprobante
+            'G' => 18,  // Fecha Registro
         ];
     }
 
@@ -50,9 +59,9 @@ class CategoriesExport implements FromCollection, WithHeadings, WithStyles, With
     {
         // Aplicar wrap text y centrado a todas las celdas con contenido
         $highestRow = $sheet->getHighestRow();
-        $sheet->getStyle('A1:D' . $highestRow)->getAlignment()->setWrapText(true);
-        $sheet->getStyle('A1:D' . $highestRow)->getAlignment()->setHorizontal('center');
-        $sheet->getStyle('A1:D' . $highestRow)->getAlignment()->setVertical('center');
+        $sheet->getStyle('A1:G' . $highestRow)->getAlignment()->setWrapText(true);
+        $sheet->getStyle('A1:G' . $highestRow)->getAlignment()->setHorizontal('center');
+        $sheet->getStyle('A1:G' . $highestRow)->getAlignment()->setVertical('center');
         
         return [
             // Estilo para el encabezado
@@ -62,7 +71,7 @@ class CategoriesExport implements FromCollection, WithHeadings, WithStyles, With
                 'alignment' => ['wrapText' => true, 'horizontal' => 'center', 'vertical' => 'center']
             ],
             // Bordes para toda la tabla
-            'A1:D' . $highestRow => [
+            'A1:G' . $highestRow => [
                 'borders' => [
                     'allBorders' => ['borderStyle' => 'thin', 'color' => ['argb' => 'FF000000']]
                 ],

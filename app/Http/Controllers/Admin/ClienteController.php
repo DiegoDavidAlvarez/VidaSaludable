@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\CustomersExport;
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -10,6 +11,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ClienteController extends Controller
 {
@@ -176,5 +178,10 @@ class ClienteController extends Controller
         $customers = Customer::all();
         $pdf = Pdf::loadView('admin.cliente.pdf', compact('customers'));
         return $pdf->download('reporte_clientes.pdf');
+    }
+
+    public function exportExcel()
+    {
+        return Excel::download(new CustomersExport, 'reporte_clientes.xlsx');
     }
 }

@@ -49,10 +49,16 @@
                 </h1>
                 <p class="text-zinc-400 mt-1">Listado completo de transacciones registradas</p>
             </div>
-            <a href="{{ route('admin.sale.export-pdf') }}"
-                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                Exportar PDF
-            </a>
+            <div class="space-x-2">
+                <a href="{{ route('admin.sale.export-pdf') }}"
+                    class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                    Exportar PDF
+                </a>
+                <a href="{{ route('admin.sale.export-excel') }}"
+                    class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+                    Exportar Excel
+                </a>
+            </div>
         </div>
 
         <!-- Tabla principal -->

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\SalesExport;
 use App\Http\Controllers\Controller;
 use App\Models\Sale;
 use App\Models\Sale_detail;
@@ -16,6 +17,7 @@ use Carbon\Carbon;
 use Auth;
 use App\Notifications\LowStockNotification;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SaleController extends Controller
 {
@@ -178,6 +180,11 @@ class SaleController extends Controller
         $pdf = Pdf::loadView('admin.sale.pdf', compact('sales'));
         return $pdf->download('reporte_ventas.pdf');
     }
+    
+    public function exportExcel()
+    {
+        return Excel::download(new SalesExport, 'reporte_ventas.xlsx');
+    }
 
     public function printReceipt($id)
     {
@@ -190,4 +197,6 @@ class SaleController extends Controller
         
         return $pdf->download($fileName);
     }
+
+    
 }
