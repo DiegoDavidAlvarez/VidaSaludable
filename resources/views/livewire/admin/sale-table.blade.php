@@ -120,11 +120,15 @@
                                         data-sale-id="{{ $sale->id }}" title="Ver detalles">
                                         <i class="fas fa-chevron-down text-sm"></i>
                                     </button>
-                                    <a href="{{ route('admin.sale_detail.print-receipt', $sale->id) }}"
-                                        class="text-zinc-400 hover:text-white transition-colors p-2 rounded-full hover:bg-zinc-700/50"
-                                        title="Imprimir comprobante">
-                                        <i class="fas fa-print text-sm"></i>
-                                    </a>
+                                    <button type="button"
+                                        class="download-options text-zinc-400 hover:text-white transition-colors p-2 rounded-full hover:bg-zinc-700/50"
+                                        data-sale-id="{{ $sale->id }}" 
+                                        data-receipt-type="{{ $sale->receipt_type }}"
+                                        data-customer-name="{{ $sale->customer->nombres }} {{ $sale->customer->apellidos }}"
+                                        data-total="{{ number_format($sale->total, 2) }}"
+                                        title="Descargar comprobante">
+                                        <i class="fas fa-download text-sm"></i>
+                                    </button>
                                 </div>
                             </td>
                         </tr>
@@ -249,8 +253,120 @@
             </div>
         @endif
     </div>
+    
+    <!-- Modal de descarga con fondo transparente -->
+    <div id="downloadModal" class="fixed inset-0 bg-transparent backdrop-blur-sm hidden z-50 flex items-center justify-center">
+        <div class="bg-zinc-900/95 backdrop-blur-md rounded-lg p-6 max-w-md w-full mx-4 border border-zinc-700 shadow-2xl">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold text-white">
+                    <i class="fas fa-download mr-2 text-blue-400"></i>
+                    Descargar Comprobante
+                </h3>
+                <button id="closeModal" class="text-zinc-400 hover:text-white">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="mb-4">
+                <div class="bg-zinc-800/50 backdrop-blur-sm rounded-lg p-4">
+                    <p class="text-sm text-zinc-300">
+                        <span class="font-medium">Comprobante:</span> 
+                        <span id="modalReceiptType" class="text-white"></span>
+                    </p>
+                    <p class="text-sm text-zinc-300 mt-1">
+                        <span class="font-medium">Cliente:</span> 
+                        <span id="modalCustomerName" class="text-white"></span>
+                    </p>
+                    <p class="text-sm text-zinc-300 mt-1">
+                        <span class="font-medium">Total:</span> 
+                        <span id="modalTotal" class="text-white font-bold">S/ </span>
+                    </p>
+                </div>
+            </div>
+            
+            <div class="space-y-3">
+                <p class="text-sm text-zinc-400 mb-3">Selecciona el formato de descarga:</p>
+                
+                <a id="downloadPdfBtn" href="#" 
+                   class="download-option flex items-center justify-center w-full px-4 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+                    <i class="fas fa-file-pdf mr-2"></i>
+                    Descargar PDF
+                </a>
+                
+                <a id="downloadExcelBtn" href="#" 
+                   class="download-option flex items-center justify-center w-full px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                    <i class="fas fa-file-excel mr-2"></i>
+                    Descargar Excel
+                </a>
+            </div>
+            
+            <div class="mt-4 pt-4 border-t border-zinc-700">
+                <button id="cancelDownload" 
+                        class="w-full px-4 py-2 bg-zinc-700 text-white rounded-lg hover:bg-zinc-600 transition-colors">
+                    Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    $(document).ready(function() {
+        // Script existente para toggle details
+        $('.toggle-details').on('click', function() {
+            const saleId = $(this).data('sale-id');
+            const detailsRow = $(`#details-${saleId}`);
+            const icon = $(this).find('i');
+    
+            detailsRow.toggleClass('hidden');
+            if (detailsRow.hasClass('hidden')) {
+                icon.removeClass('fa-chevron-up').addClass('fa-chevron-down');
+            } else {
+                icon.removeClass('fa-chevron-down').addClass('fa-chevron-up');
+            }
+        });
+    
+        // Script para el modal de descarga
+        $('.download-options').on('click', function() {
+            const saleId = $(this).data('sale-id');
+            const receiptType = $(this).data('receipt-type');
+            const customerName = $(this).data('customer-name');
+            const total = $(this).data('total');
+            
+            // Actualizar contenido del modal
+            $('#modalReceiptType').text(receiptType + ' #' + saleId);
+            $('#modalCustomerName').text(customerName);
+            $('#modalTotal').text('S/ ' + total);
+            
+            // Configurar enlaces de descarga
+            $('#downloadPdfBtn').attr('href', `/admin/sale/${saleId}/download-pdf`);
+            $('#downloadExcelBtn').attr('href', `/admin/sale/${saleId}/download-excel`);
+            
+            // Mostrar modal
+            $('#downloadModal').removeClass('hidden');
+        });
+    
+        // Cerrar modal al hacer clic en los botones de cerrar
+        $('#closeModal, #cancelDownload').on('click', function() {
+            $('#downloadModal').addClass('hidden');
+        });
+    
+        // Cerrar modal al hacer clic en las opciones de descarga
+        $('.download-option').on('click', function() {
+            // Pequeño delay para permitir que la descarga se inicie
+            setTimeout(function() {
+                $('#downloadModal').addClass('hidden');
+            }, 100);
+        });
+    
+        // Cerrar modal al hacer clic fuera del contenido
+        $('#downloadModal').on('click', function(e) {
+            if (e.target === this) {
+                $(this).addClass('hidden');
+            }
+        });
+    });
+    </script>
 </div>
-
 <script>
     $(document).ready(function() {
         $('.toggle-details').on('click', function() {

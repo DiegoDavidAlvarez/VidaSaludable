@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Exports\SalesExport;
+use App\Exports\SaleReceiptExport; // Agregar esta línea
 use App\Http\Controllers\Controller;
 use App\Models\Sale;
 use App\Models\Sale_detail;
@@ -198,5 +199,28 @@ class SaleController extends Controller
         return $pdf->download($fileName);
     }
 
-    
+    // NUEVOS MÉTODOS AGREGADOS PARA LAS OPCIONES DE DESCARGA
+
+    // Método para descargar PDF del comprobante individual
+    public function downloadPdf($id)
+    {
+        $sale = Sale::with(['customer', 'saleDetails.product'])->findOrFail($id);
+        
+        $pdf = Pdf::loadView('admin.sale_detail.pdf', compact('sale'));
+        
+        // Generar nombre del archivo
+        $fileName = 'comprobante_' . $sale->receipt_type . '_' . $sale->id . '.pdf';
+        
+        return $pdf->download($fileName);
+    }
+
+    // Método para descargar Excel del comprobante individual
+    public function downloadExcel($id)
+    {
+        $sale = Sale::with(['customer', 'saleDetails.product'])->findOrFail($id);
+        
+        $fileName = 'comprobante_' . $sale->receipt_type . '_' . $sale->id . '.xlsx';
+        
+        return Excel::download(new SaleReceiptExport($sale), $fileName);
+    }
 }
