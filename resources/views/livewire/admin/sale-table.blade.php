@@ -367,19 +367,3 @@
     });
     </script>
 </div>
-<script>
-    $(document).ready(function() {
-        $('.toggle-details').on('click', function() {
-            const saleId = $(this).data('sale-id');
-            const detailsRow = $(`#details-${saleId}`);
-            const icon = $(this).find('i');
-
-            detailsRow.toggleClass('hidden');
-            if (detailsRow.hasClass('hidden')) {
-                icon.removeClass('fa-chevron-up').addClass('fa-chevron-down');
-            } else {
-                icon.removeClass('fa-chevron-down').addClass('fa-chevron-up');
-            }
-        });
-    });
-</script>
